@@ -1,0 +1,378 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Overleaf (WriteLaTeX) Example: Molecular Chemistry Presentation
+%
+% Source: http://www.overleaf.com
+%
+% In these slides we show how Overleaf can be used with standard
+% chemistry packages to easily create professional presentations.
+%
+% Feel free to distribute this example, but please keep the referral
+% to overleaf.com
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[xcolor={dvipsnames}]{beamer}
+
+\mode<presentation>
+{
+  \usetheme{Madrid}       % or try default, Darmstadt, Warsaw, ...
+  \usecolortheme{default} % or try albatross, beaver, crane, ...
+  \usefonttheme{default}    % or try default, structurebold, ...
+  \setbeamertemplate{navigation symbols}{}
+  \setbeamertemplate{caption}[numbered]
+}
+
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{graphicx}
+\usepackage{hyperref}
+  \hypersetup{colorlinks=true}
+  \hypersetup{urlcolor=blue}
+  \hypersetup{linkcolor = .}
+\usepackage{xcolor}
+\usepackage{siunitx}
+  \sisetup{separate-uncertainty = true}
+\DeclareSIUnit\barn{b}
+\usepackage{physics}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{subcaption}
+\usepackage[en-GB]{datetime2}
+\usepackage{overpic}
+\usepackage{feynmp}
+\DeclareGraphicsRule{*}{mps}{*}{}
+\usepackage{scalerel}
+\newcommand{\mylbrace}[2]{\vspace{#2pt}\hspace{6pt}\scaleleftright[\dimexpr5pt+#1\dimexpr0.06pt]{\lbrace}{\rule[\dimexpr2pt-#1\dimexpr0.5pt]{-4pt}{#1pt}}{.}}
+\newcommand{\myrbrace}[2]{\vspace{#2pt}\scaleleftright[\dimexpr5pt+#1\dimexpr0.06pt]{.}{\rule[\dimexpr2pt-#1\dimexpr0.5pt]{-4pt}{#1pt}}{\rbrace}\hspace{6pt}}
+
+% Trim in percent
+\usepackage{adjustbox}
+
+% No "Figure" prefix
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+% Nice decay amplitude diagrams
+\usepackage{amsmath,amssymb,tikz-cd}
+
+% Strike out text
+\usepackage[normalem]{ulem}
+
+% For figures with text overlay
+\usepackage{overpic}
+
+% Arrows
+\usepackage{tikz}
+\newcommand{\tikzmark}[1]{\tikz[remember picture] \node[coordinate] (#1) {#1};}
+
+% Colourbox with line breaks
+\newcommand{\cbox}[2][lime!20]{%
+  \colorbox{#1}{\parbox{\dimexpr\linewidth-2\fboxsep}{\strut #2\strut}}%
+}
+
+% Vector arrows
+\usepackage[pdftex]{pict2e}
+
+% Checkmark symbol
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
+
+% Here's where the presentation starts, with the info for the title slide
+\title[RTA WP4 meeting]{Effects of muon alignment on tracking efficiencies}
+
+\author[Martin Tat]{Rowina Caspary$^1$, Michel de Cian$^2$, Stephanie Hansmann-Menzemer$^1$, Peilian Li$^3$, Maurice Morgenthaler$^1$, Martin Tat$^1$}
+\institute[Heidelberg]{Heidelberg University$^1$, University of Manchester$^2$, UCAS$^3$}
+\date{20th November 2025}
+
+\titlegraphic{\includegraphics[height = 1.2cm]{lhcb.jpg}\hspace{1.0cm}~%
+              \includegraphics[height = 1.2cm]{FSP_logo.png}
+              \includegraphics[height = 1.2cm]{ManchesterLogo.jpg}~%
+              \includegraphics[height = 1.2cm]{UCAS_logo.png}~%
+              \includegraphics[height = 1.2cm]{HeidelbergLogo.pdf}}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% These three lines create an automatically generated table of contents.
+%\begin{frame}{Outline}
+%  \tableofcontents
+%\end{frame}
+
+\begin{frame}{Introduction}
+  \vspace{0.0cm}
+  {\Large Strategy for tracking efficiency determination:}
+  \vspace{0.2cm}
+  \begin{itemize}
+    \setlength\itemsep{0.8em}
+    \item{Tag-and-probe method with $J/\psi\to\mu^+\mu^-$}
+    \item{Combine efficiencies of two methods:}
+    \begin{itemize}
+      \item{VeloMuon: SciFi efficiency}
+      \item{Downstream: Velo efficiency}
+    \end{itemize}
+    \item{Cross check with MuonUT method}
+    \begin{itemize}
+      \item{Today I will show the effect of alignment on this method}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Tag-and-probe method}
+  \vspace{0.0cm}
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Plots/Tag_and_probe_method.png}
+    \caption*{\small Figure from \href{https://www.physi.uni-heidelberg.de/Publications/PhD_thesis.pdf}{Rowina's thesis}}
+  \end{figure}
+  \begin{itemize}
+    \item{Fully reconstruct one muon from $J/\psi\to\mu^+\mu^-$}
+    \item{Partially reconstruct the other muon}
+    \item{Match hits in specific sub-detector with partially reconstructed track}
+  \end{itemize}
+  \begin{equation*}
+    \epsilon_{\rm track} = \frac{N_{\rm matched}}{N_{\rm matched} + N_{\rm failed}}
+  \end{equation*}
+\end{frame}
+
+\begin{frame}{The MuonUT method}
+  \vspace{0.0cm}
+  \begin{enumerate}
+    \setlength\itemsep{1.0em}
+    \item{Get hits from Muon system}
+    \item{Reconstruct standalone muon track}
+    \begin{itemize}
+    \setlength\itemsep{0.4em}
+      \item{Four muon hits (M2, M3, M4, M5)}
+      \item{Fit straight line in YZ and XZ planes}
+      \item{Calculate $p_x$ kick from knowledge of magnet centre $z_{\rm magnet}$, assuming track originated from the origin}
+    \end{itemize}
+    \item{Extrapolate track to UT and add UT hits}
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Charge asymmetry in MuonUT tuples}
+  \vspace{0.0cm}
+  \begin{center}
+    {\Large What is the issue?}
+  \end{center}
+  \vspace{0.3cm}
+  \begin{itemize}
+    \setlength\itemsep{1.0em}
+    \item{Huge difference in the number of $\mu^+$ and $\mu^-$ candidates for 2024}
+    \begin{itemize}
+      \item{Only in data, not MC}
+    \end{itemize}
+    \item{Behaviour swaps between magnet polarities}
+    \item{What is the cause?}
+    \begin{enumerate}
+      \item{Fewer tracks reconstructed on the C-side, compared to A-side}
+      \item{Kinematic distributions, such as $p_T$ and $J/\psi$ $\chi_{\rm vtx}^2$, are shifted $\implies$ Effectively tighter cuts in trigger selection}
+    \end{enumerate}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Charge asymmetry in MuonUT tuples}
+  \vspace{0.0cm}
+  \begin{center}
+    {\Large How large is the issue? A factor \underline{two}!}
+  \end{center}
+  \vspace{0.5cm}
+  \begin{center}
+    \begin{tabular}{llrrc}
+      \hline
+      Sample       & Magnet polarity & $\mu^+$   & $\mu^-$   & Ratio $+/-$ \\
+      \hline
+      2024 block 1 & Up              & $1126660$ & $2046110$ & 0.55 \\
+      2024 block 5 & Up              & $2739920$ & $5832372$ & 0.47 \\
+      2024 block 6 & Down            & $5036676$ & $2322011$ & 2.17 \\
+      2024 block 7 & Down            & $2430038$ & $1155671$ & 2.10 \\
+      2024 block 8 & Up              & $702585$  & $1443764$ & 0.49 \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Charge asymmetry in MuonUT tuples}
+  \vspace{0.0cm}
+  \begin{center}
+    {\Large What about 2025?}
+  \end{center}
+  \vspace{0.2cm}
+  \begin{itemize}
+    \setlength\itemsep{1.0em}
+    \item{No asymmetry in $\mu^+$ and $\mu^-$ candidates in 2025 data}
+    \item{Kinematic distributions look much more symmetric in 2025}
+  \end{itemize}
+  \vspace{0.2cm}
+  \begin{center}
+    {\large Main changes in 2025 data taking (by Michel de Cian):}
+  \end{center}
+  \vspace{0.0cm}
+  \begin{itemize}
+    \setlength\itemsep{1.0em}
+    \item{Use muon clusters instead of muon hits}
+    \item{\underline{Constrain $y = \SI{0(20)}{\milli\meter}$ at $z = 0$ in linear fit in the YZ plane}}
+  \end{itemize}
+  \vspace{0.2cm}
+  \begin{center}
+    {\large Additionally: Muon alignment updated in September 2025, which affects Sprucing25c3/4 (see details \href{https://indico.cern.ch/event/1576157/\#7-update-muon-alignment}{here})}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Muon alignment}
+  \vspace{0.0cm}
+  \begin{center}
+    {\Large My hypothesis: \\
+      Muon system misalignment in $y$}
+  \end{center}
+  \vspace{0.5cm}
+  \begin{itemize}
+    \setlength\itemsep{1.0em}
+    \item{Mis-aligned Muon system could bias the extrapolation to the UT}
+    \item{UT hits might not be correctly added, or track quality might be worse}
+    \item{Effect not seen in VeloMuon or Downstream methods because tracking detectors place stronger constraints on the particle trajectory}
+    \item{$y$-constraint added by Michel counteracts misalignment in 2025 data}
+    \item{How to prove this hypothesis?}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Study of 2025 data}
+  \vspace{0.0cm}
+  \begin{center}
+    {\Large Strategy for analysing 2025 data:}
+  \end{center}
+  \vspace{0.5cm}
+  \begin{enumerate}
+    \setlength\itemsep{1.0em}
+    \item{Tuple VeloMuon events that also passed MuonUT trigger line}
+    \begin{itemize}
+      \item{Unbiased sample of muons to study alignment with}
+    \end{itemize}
+    \item{For the same events, create new tuple with muon tracks}
+    \begin{itemize}
+      \item{Rerun standalone muon track reconstruction without $y$-constraint}
+    \end{itemize}
+    \item{Match muon tracks to VeloMuon probe tracks using LHCbIDs}
+    \item{Study $y$-position of muon tracks, extrapolated back to the origin}
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Sprucing25c3 MagUp alignment}
+  \vspace{0.0cm}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/MuonUT_extrapolated_y_mup_Sprucing25c3.pdf}
+      \caption{Positive muons}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/MuonUT_extrapolated_y_mum_Sprucing25c3.pdf}
+      \caption{Negative muons}
+    \end{subfigure}
+  \end{figure}
+  \begin{itemize}
+    \item{$\mu^+$ ($\mu^-$) mostly hit the C-side (A-side) due to magnetic field}
+    \item{Minor residual mis-alignment, but this is probably very close to the position resolution of the Muon system anyway}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Sprucing25c1 MagUp alignment}
+  \vspace{0.0cm}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/MuonUT_extrapolated_y_mup_Sprucing25c1.pdf}
+      \caption{Positive muons}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/MuonUT_extrapolated_y_mum_Sprucing25c1.pdf}
+      \caption{Negative muons}
+    \end{subfigure}
+  \end{figure}
+  \begin{itemize}
+    \item{Huge ($\sim\SI{25}{\milli\meter}$) bias on the $y$-position of the muons going through the C-side of the muon system}
+    \item{The only change in Sprucing25c3 was the muon alignment}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Sprucing25c1 MagUp alignment}
+  \vspace{0.0cm}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/MuonUT_extrapolated_y_mup_Sprucing25c1_new_alignment.pdf}
+      \caption{Positive muons}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/MuonUT_extrapolated_y_mum_Sprucing25c1_new_alignment.pdf}
+      \caption{Negative muons}
+    \end{subfigure}
+  \end{figure}
+  \begin{itemize}
+    \item{Reconstructing Sprucing25c1 with newest muon alignment: No bias!}
+    \item{Somehow, a $\SI{5}{\milli\meter}$ misalignment in M3 can cause a $\SI{25}{\milli\meter}$ bias in $y$ at the origin (maybe level-arm effect?)}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Effect on trigger selection}
+  \vspace{0.0cm}
+  \begin{center}
+    {\Large To get an unbiased quantification of the effect on the trigger selection:}
+  \end{center}
+  \vspace{0.5cm}
+  \begin{itemize}
+    \setlength\itemsep{1.0em}
+    \item{Re-run trigger line selection in Moore in Sprucing25c1 data}
+    \begin{enumerate}
+      \item{With nominal settings}
+      \item{Without $y$-constraint}
+      \item{Without $y$-constraint and with new alignment}
+    \end{enumerate}
+    \item{2025 data does not have the charge asymmetry, so this should be unbiased evidence for my hypothesis}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Effect on trigger selection}
+  \vspace{0.0cm}
+  \begin{center}
+    {\Large Retention when running MuonUT trigger line in Moore over $50\times 10^3$ events from Sprucing25c1}
+  \end{center}
+  \vspace{0.5cm}
+  \begin{center}
+    \begin{tabular}{llrrc}
+      \hline
+      $y$-constraint & Alignment & $\mu^+$ & $\mu^-$ & Ratio $+/-$ \\
+      \hline
+      Yes            & Old       & $388$   & $416$   & 0.93 \\
+      No             & Old       &  $80$   & $199$   & 0.40 \\
+      No             & New       & $184$   & $208$   & 0.88 \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Summary}
+  \vspace{0.0cm}
+  \begin{itemize}
+    \setlength\itemsep{0.7em}
+    \item{Studied impact of muon alignment on the MuonUT method by rerunning reconstruction on 2024 data without $y$-constraint}
+    \item{Muon standalone tracks have a large mis-alignment on the C-side before September 2025}
+    \item{Confirmed this by running Moore with/without alignment}
+    \item{What next?}
+    \begin{enumerate}
+      \item{It would be useful to include the misalignment in MC, as this is a significant effect}
+      \item{The effect seems to be affect failed and matched samples in the same way, so tracking efficiencies should not be affected}
+    \end{enumerate}
+  \end{itemize}
+  \begin{center}
+    \Huge Thanks for listening!
+  \end{center}
+\end{frame}
+
+\end{document}
