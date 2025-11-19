@@ -77,7 +77,7 @@
 % Here's where the presentation starts, with the info for the title slide
 \title[RTA WP4 meeting]{Effects of muon alignment on tracking efficiencies}
 
-\author[Martin Tat]{Rowina Caspary$^1$, Michel de Cian$^2$, Stephanie Hansmann-Menzemer$^1$, Peilian Li$^3$, Maurice Morgenthaler$^1$, Martin Tat$^1$}
+\author[Martin Tat]{Rowina Caspary$^1$, Michel De Cian$^2$, Stephanie Hansmann-Menzemer$^1$, Peilian Li$^3$, Maurice Morgenthaler$^1$, Martin Tat$^1$}
 \institute[Heidelberg]{Heidelberg University$^1$, University of Manchester$^2$, UCAS$^3$}
 \date{20th November 2025}
 
@@ -205,7 +205,7 @@
   \end{itemize}
   \vspace{0.2cm}
   \begin{center}
-    {\large Main changes in 2025 data taking (by Michel de Cian):}
+    {\large Main changes in 2025 data taking (by Michel De Cian):}
   \end{center}
   \vspace{0.0cm}
   \begin{itemize}
@@ -229,7 +229,7 @@
   \begin{itemize}
     \setlength\itemsep{1.0em}
     \item{Mis-aligned Muon system could bias the extrapolation to the UT}
-    \item{UT hits might not be correctly added, or track quality might be worse}
+    \item{Results in worse track quality $\implies$ Worse $J/\psi$ $\chi^2_{\rm vtx}$, etc}
     \item{Effect not seen in VeloMuon or Downstream methods because tracking detectors place stronger constraints on the particle trajectory}
     \item{$y$-constraint added by Michel counteracts misalignment in 2025 data}
     \item{How to prove this hypothesis?}
@@ -323,18 +323,23 @@
 \begin{frame}{Effect on trigger selection}
   \vspace{0.0cm}
   \begin{center}
-    {\Large To get an unbiased quantification of the effect on the trigger selection:}
+    {\Large To get an quantification of the effect on the MuonUT trigger selection:}
   \end{center}
   \vspace{0.5cm}
   \begin{itemize}
     \setlength\itemsep{1.0em}
-    \item{Re-run trigger line selection in Moore in Sprucing25c1 data}
+    \item{Re-run reconstruction and trigger selection on Sprucing25c1 TurCal data (which have rawbanks saved)}
+    \begin{itemize}
+      \item{This sample does not have a charge asymmetry, so the results should be unbiased, even though it has undergone a trigger selection}
+    \end{itemize}
+    \item{Re-run trigger line selection in Moore:}
     \begin{enumerate}
       \item{With nominal settings}
       \item{Without $y$-constraint}
       \item{Without $y$-constraint and with new alignment}
+      \item{With $y$-constraint and with new alignment}
     \end{enumerate}
-    \item{2025 data does not have the charge asymmetry, so this should be unbiased evidence for my hypothesis}
+
   \end{itemize}
 \end{frame}
 
@@ -349,9 +354,10 @@
       \hline
       $y$-constraint & Alignment & $\mu^+$ & $\mu^-$ & Ratio $+/-$ \\
       \hline
-      Yes            & Old       & $388$   & $416$   & 0.93 \\
-      No             & Old       &  $80$   & $199$   & 0.40 \\
-      No             & New       & $184$   & $208$   & 0.88 \\
+      Yes            & Old       & $459 \pm 21$ & $416 \pm 20$ & $1.10 \pm 0.07$ \\
+      No             & Old       &  $\phantom{0}80 \pm \phantom{0}9$  & $199 \pm 14$ & $0.40 \pm 0.05$ \\
+      No             & New       & $184 \pm 14$ & $208 \pm 14$ & $0.88 \pm 0.09$ \\
+      Yes            & New       & $516 \pm 23$ & $456 \pm 21$ & $1.13 \pm 0.07$ \\
       \hline
     \end{tabular}
   \end{center}
