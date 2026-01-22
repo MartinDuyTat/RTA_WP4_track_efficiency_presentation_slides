@@ -328,6 +328,7 @@
   {\large TrackCalib development 3: New data/MC samples}
   \begin{itemize}
     \setlength\itemsep{1.0em}
+    \item{Sim10d $\to$ Sim10g}
     \item{Use overlap functors for matching}
     \item{All cuts and matching criteria updated (after discussion with Maurice and Rowina)}
     \item{Tracking efficiencies were compared before and after to understand differences}
@@ -410,7 +411,7 @@
       \includegraphics[width=0.7\textwidth]{Plots/trackeff_MC_Downstream_ETA_new_samples.pdf}
     \end{subfigure}
   \end{figure}
-  {Downstream VeloMuon track efficiencies in $\eta$}
+  {MC Downstream track efficiencies in $\eta$}
 \end{frame}
 
 \begin{frame}{TrackCalib2 development 3}
@@ -680,30 +681,36 @@
   {Data/MC ratio for Combined/MuonUT track efficiencies in $\eta$}
 \end{frame}
 
-\begin{frame}{New AP}
+\begin{frame}{Preparing data/MC samples}
   \vspace{0.0cm}
-  {\large Need to submit new APs:}
   \begin{enumerate}
-    \setlength\itemsep{0.8em}
-    \item{Blocks 1, 5, 6, 7, 8 of 2024 data}
+    \setlength\itemsep{0.4em}
+    \item{AP for blocks 1, 5, 6, 7, 8 of 2024 data}
     \begin{itemize}
-      \item{AP ready: \href{https://gitlab.cern.ch/lhcb-datapkg/AnalysisProductions/}{!xxx}}
-      \item{Include sprucing decision}
-      \item{Include DD4HEP binds}
-      \item{Apply tag muon TOS filter (removes around $75\%$ of candidates)}
-      \item{Remove unecessary tag muon overlap variables (removes around $20\%$ of branches)}
+      \item{AP ready: \href{https://gitlab.cern.ch/lhcb-datapkg/AnalysisProductions/-/merge_requests/4808}{!4808}}
+      \item{Include sprucing decision and DD4HEP binds}
+      \item{Apply tag muon TOS filter (removes $75\%$ of candidates)}
+      \item{Remove tag muon overlap variables (removes $20\%$ of branches)}
     \end{itemize}
-    \item{Submit MC over block 1b MC}
+    \item{We should run over block 2 as well}
     \begin{itemize}
-      \item{AP ready: \href{https://gitlab.cern.ch/lhcb-datapkg/AnalysisProductions/}{!xxx}}
+      \item{I requested MC yesterday}
     \end{itemize}
-    \item{Should we consider running block 2 as well?}
+    \item{MC for block 1b}
     \begin{itemize}
-      \item{Need to check if we have MC}
+      \item{MC request has been stuck for 1 month: \href{https://gitlab.cern.ch/lhcb-simulation/mc-requests/-/merge_requests/1640}{!1640}}
     \end{itemize}
-    \item{$pp$ reference run?}
-    \item{Might remove some older samples as well}
+    \item{2025 pre-TS data}
     \begin{itemize}
+      \item{MC is ready, need to create AP over data/MC}
+    \end{itemize}
+    \item{2024 $pp$ reference run}
+    \begin{itemize}
+      \item{MC is ready, need to create AP over data/MC}
+    \end{itemize}
+    \item{Tidy up AP}
+    \begin{itemize}
+      \item{Perhaps remove older samples that are not used}
       \item{Track efficiency AP currently takes up 13 TB(!)}
     \end{itemize}
   \end{enumerate}
@@ -734,7 +741,9 @@
   \vspace{0.0cm}
   \begin{enumerate}
     \setlength\itemsep{1.5em}
-    \item{Submit AP over 2024 data and block 1b MC}
+    \item{Submit AP over 2024 data and rerun everything}
+    \item{Look at 2025 pre-TS tracking efficiencies}
+    \item{Add block 2 and $pp$ ref run}
     \item{Optimise 2D binning scheme and produce 2D data/MC ratio tables for all 2024 blocks and $\mu^\pm$, $\mu^+$, $\mu^-$}
     \item{Unfortunately I've had limited time to look into Combined/MuonUT discrepancies, but I'll try to do this in parallel}
   \end{enumerate}
