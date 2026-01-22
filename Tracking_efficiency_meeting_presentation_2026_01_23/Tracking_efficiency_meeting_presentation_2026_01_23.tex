@@ -1,0 +1,743 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Overleaf (WriteLaTeX) Example: Molecular Chemistry Presentation
+%
+% Source: http://www.overleaf.com
+%
+% In these slides we show how Overleaf can be used with standard
+% chemistry packages to easily create professional presentations.
+%
+% Feel free to distribute this example, but please keep the referral
+% to overleaf.com
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[xcolor={dvipsnames}]{beamer}
+
+\mode<presentation>
+{
+  \usetheme{Madrid}       % or try default, Darmstadt, Warsaw, ...
+  \usecolortheme{default} % or try albatross, beaver, crane, ...
+  \usefonttheme{default}    % or try default, structurebold, ...
+  \setbeamertemplate{navigation symbols}{}
+  \setbeamertemplate{caption}[numbered]
+}
+
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{graphicx}
+\usepackage{hyperref}
+  \hypersetup{colorlinks=true}
+  \hypersetup{urlcolor=blue}
+  \hypersetup{linkcolor = .}
+\usepackage{xcolor}
+\usepackage{siunitx}
+  \sisetup{separate-uncertainty = true}
+\DeclareSIUnit\barn{b}
+\usepackage{physics}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{subcaption}
+\usepackage[en-GB]{datetime2}
+\usepackage{overpic}
+\usepackage{feynmp}
+\DeclareGraphicsRule{*}{mps}{*}{}
+\usepackage{scalerel}
+\newcommand{\mylbrace}[2]{\vspace{#2pt}\hspace{6pt}\scaleleftright[\dimexpr5pt+#1\dimexpr0.06pt]{\lbrace}{\rule[\dimexpr2pt-#1\dimexpr0.5pt]{-4pt}{#1pt}}{.}}
+\newcommand{\myrbrace}[2]{\vspace{#2pt}\scaleleftright[\dimexpr5pt+#1\dimexpr0.06pt]{.}{\rule[\dimexpr2pt-#1\dimexpr0.5pt]{-4pt}{#1pt}}{\rbrace}\hspace{6pt}}
+
+% Trim in percent
+\usepackage{adjustbox}
+
+% No "Figure" prefix
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+% Nice decay amplitude diagrams
+\usepackage{amsmath,amssymb,tikz-cd}
+
+% Strike out text
+\usepackage[normalem]{ulem}
+
+% For figures with text overlay
+\usepackage{overpic}
+
+% Arrows
+\usepackage{tikz}
+\newcommand{\tikzmark}[1]{\tikz[remember picture] \node[coordinate] (#1) {#1};}
+
+% Colourbox with line breaks
+\newcommand{\cbox}[2][lime!20]{%
+  \colorbox{#1}{\parbox{\dimexpr\linewidth-2\fboxsep}{\strut #2\strut}}%
+}
+
+% Vector arrows
+\usepackage[pdftex]{pict2e}
+
+% Checkmark symbol
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
+
+% Here's where the presentation starts, with the info for the title slide
+\title[Heidelberg tracking meeting]{Progress update on tracking efficiencies}
+
+\author[Martin Tat]{Martin Tat}
+\institute[Heidelberg]{Heidelberg University}
+\date{23rd January 2026}
+
+\titlegraphic{\includegraphics[height = 2.3cm]{lhcb.jpg}\hspace{1.0cm}~%
+              \includegraphics[height = 2.3cm]{HeidelbergLogo.pdf}}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% These three lines create an automatically generated table of contents.
+%\begin{frame}{Outline}
+%  \tableofcontents
+%\end{frame}
+
+\begin{frame}{Organisation of these meetings}
+  \vspace{0.0cm}
+  {\Large Current meeting time: Tuesdays 10:30}
+  \vspace{0.2cm}
+  \begin{itemize}
+    \setlength\itemsep{0.8em}
+    \item{Is this slot suitable for everyone? Or should we move it?}
+    \begin{itemize}
+      \item[-]{As RD RTA liason, I have biweekly RTA WP3 at 10:00 meetings}
+    \end{itemize}
+    \item{Note: As I'm not working full time on tracking efficiencies, it's likely I'll only organise these meetings biweekly instead of weekly}
+    \item{I'll provide minor updates on MatterMost}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{TrackCalib2 update: Environment}
+  \vspace{0.0cm}
+  \begin{itemize}
+    \setlength\itemsep{1.0em}
+    \item{Issue: The TrackCalib2 environment setup has caused headache}
+    \begin{itemize}
+      \item{Conda environment takes several hours to set up and occupies significant disk space}
+      \item{Personally, the \texttt{mamba} instructions never worked for me on lxplus}
+      \item{Different machines seem to throw different warnings/errors}
+    \end{itemize}
+    \item{Solution: Set up an \texttt{lb-conda} environment}
+    \begin{itemize}
+      \item{MR has been approved and merged: \href{https://gitlab.cern.ch/lhcb-core/conda-environments/-/merge_requests/247}{!247}}
+      \item{I tested on lxplus and it worked out-of-the-box}
+      \item{Anyone can clone TrackCalib2 and have it running in a few seconds}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{TrackCalib2 update: Environment}
+  \vspace{0.0cm}
+  \small
+  {\large Clone TrackCalib2 repository:} \\
+  \texttt{git clone ssh://git@gitlab.cern.ch:7999/lhcb-rta/trackcalib2.git} \\
+  \texttt{git submodule init \&\& git submodule update} \\
+  \vspace{1.0cm}
+  {\large Load environment: $\leftarrow$ now takes seconds instead of hours} \\
+  \texttt{lb-conda trackcalib2} \\
+  \vspace{1.0cm}
+  {\large Run TrackCalib2:} \\
+  \texttt{python trackcalib.py prepare -year 2024\_Block1} \\
+  \texttt{python trackcalib.py fit -year 2024\_Block1}
+\end{frame}
+
+\begin{frame}{Missing DD4HEP binds}
+  \vspace{0.0cm}
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[width=1.0\textwidth,page=5]{DD4HEP_binds_screenshot.png}
+  \end{figure}
+  \begin{itemize}
+    \setlength\itemsep{1.0em}
+    \item{Do I understand correctly that multiple scattering and energy loss corrections are disabled for data, but not MC? Why...?}
+    \item{I ran a quick comparison between MC with and without these corrections, and differences are huge for VeloMuon and MuonUT}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Missing DD4HEP binds}
+  \vspace{0.0cm}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/dd4hep_comparison_VeloMuon_mup.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/dd4hep_comparison_VeloMuon_mum.pdf}
+    \end{subfigure}
+  \end{figure}
+  \begin{itemize}
+    \setlength\itemsep{1.0em}
+    \item{Fewer candidates with DD4HEP binds for VeloMuon}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Missing DD4HEP binds}
+  \vspace{0.0cm}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/dd4hep_comparison_MuonUT_mup.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/dd4hep_comparison_MuonUT_mum.pdf}
+    \end{subfigure}
+  \end{figure}
+  \begin{itemize}
+    \setlength\itemsep{1.0em}
+    \item{Difference is much larger for MuonUT!}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Missing DD4HEP binds}
+  \vspace{0.0cm}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/dd4hep_comparison_VeloMuon_mup_Jpsi_BPVFDCHI2_log.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/dd4hep_comparison_VeloMuon_mup_muprobe_TRACK_CHI2NDOF.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/dd4hep_comparison_VeloMuon_mup_muprobe_IPCHI2_OWNPV_log.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/dd4hep_comparison_VeloMuon_mup_muprobe_PT.pdf}
+    \end{subfigure}
+  \end{figure}
+  \begin{itemize}
+    \setlength\itemsep{0.0em}
+    \item{It's mostly VeloMuon probe muon distributions that are different...}
+    \item{... but I don't see much difference in MuonUT distributions}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Sprucing decision filter}
+  \vspace{0.0cm}
+  \begin{itemize}
+    \setlength\itemsep{1.0em}
+    \item{Reminder: Michel discovered a prescale in blocks 7/8}
+    \item{Events failing the prescale but triggered by other lines are kept when rerunning reconstruction}
+    \item{Solution: Apply sprucing decision filter directly in Moore}
+    \item{Rowina discovered that applying the filter in blocks 5/6 also changed the tracking efficiencies, and I confirmed this in TrackCalib2 as well...}
+    \item{... and for the number of $J/\psi$ candidates, I see a $10\%$ discrepancy (!!!) in block 5/6}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Sprucing decision filter}
+  \vspace{0.0cm}
+  \begin{itemize}
+    \setlength\itemsep{1.0em}
+    \item{Check impact of DD4HEP binds using block 6 data}
+    \item{The numbers are surprisingly consistent with Moore v55r12p3:}
+  \end{itemize}
+  \begin{center}
+    \begin{tabular}{llrrc}
+      \hline
+      Spruce   decision & DD4HEP binds & VeloMuon  & Downstream & MuonUT   \\
+      \hline
+      No                & No           &  197/183  &  719/706   &  121/45  \\
+      Yes               & No           &  180/169  &  719/706   &  115/39  \\
+      No                & Yes          &  195/178  &  719/706   &  131/46  \\
+      Yes               & Yes          &  195/178  &  719/706   &  131/46  \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Sprucing decision filter}
+  \vspace{0.0cm}
+  \begin{itemize}
+    \setlength\itemsep{1.0em}
+    \item{We need to run Moore v55r12p8 due to bug fixes}
+    \item{Here there are differences, but they are very small:}
+  \end{itemize}
+  \begin{center}
+    \begin{tabular}{llrrc}
+      \hline
+      Spruce decision   & DD4HEP binds & VeloMuon  & Downstream & MuonUT   \\
+      \hline
+      No                & No           &  193/182  &  665/665   &  114/43  \\
+      Yes               & No           &  176/168  &  661/660   &  108/37  \\
+      No                & Yes          &  195/172  &  665/665   &  123/44  \\
+      Yes               & Yes          &  193/172  &  661/660   &  123/44  \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Missing DD4HEP binds and sprucing decision filter}
+  \vspace{0.0cm}
+  \begin{itemize}
+    \setlength\itemsep{1.0em}
+    \item{Sprucing decision filter definitely needed to get correct efficiencies in blocks 7/8}
+    \item{But clearly we don't get consistent numbers in blocks 5/6 unless DD4HEP binds are included}
+    \item{Don't quite understand the DD4HEP binds yet...}
+    \item{... but I will rerun all data APs with them}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{TrackCalib2 development 1}
+  \vspace{0.0cm}
+  {\large TrackCalib development 1: Remove Run 1/2 code}
+  \begin{itemize}
+    \setlength\itemsep{1.0em}
+    \item{Run 1/2 used different methods/variables/cuts/matching... huge amount of code unecessary for Run 3}
+    \item{I suggest separate releases for Run 1/2 and Run 3}
+    \begin{itemize}
+      \item{Less code $\implies$ Easier to maintain}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{TrackCalib2 development 2}
+  \vspace{0.0cm}
+  {\large TrackCalib development 2: Change to RDataFrame}
+  \begin{itemize}
+    \setlength\itemsep{1.0em}
+    \item{Uproot processes hundreds of files one by one}
+    \item{Preparing samples can take hours}
+    \begin{itemize}
+      \item{Very difficult to perform studies that require reprocessing the samples}
+    \end{itemize}
+    \item{I know ROOT dependency was removed in the past, but for sample preparation RDataFrame is much more suitable in my opinion}
+    \begin{itemize}
+      \item{Multi-thread support}
+      \item{Lazy evaluation $\implies$ Only need to loop once to apply all cuts and matching criteria}
+    \end{itemize}
+    \item{After this change, sample preparation only takes a few minutes!}
+    \begin{itemize}
+      \item{Allows me to prepare new samples and produce tracking efficiencies almost instantly once AP is ready}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{TrackCalib2 development 3}
+  \vspace{0.0cm}
+  {\large TrackCalib development 3: New data/MC samples}
+  \begin{itemize}
+    \setlength\itemsep{1.0em}
+    \item{Use overlap functors for matching}
+    \item{All cuts and matching criteria updated (after discussion with Maurice and Rowina)}
+    \item{Tracking efficiencies were compared before and after to understand differences}
+    \begin{itemize}
+      \item{Small differences understood to be sprucing decision filter and wrong/outdated matching criteria in TrackCalib2}
+    \end{itemize}
+    \item{Note: Plots I'm going to show don't have DD4HEP binds, which is expected to have a large impact}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{TrackCalib2 development 3}
+  \vspace{0.0cm}
+  {\large TrackCalib development 3: New data/MC samples}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_MC_VeloMuon_ETA_Block1_old_new_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_MC_VeloMuon_ETA_Block5_old_new_comparison.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_MC_VeloMuon_ETA_Block8_old_new_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_MC_VeloMuon_ETA_new_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {MC VeloMuon track efficiencies in $\eta$}
+\end{frame}
+
+\begin{frame}{TrackCalib2 development 3}
+  \vspace{0.0cm}
+  {\large TrackCalib development 3: New data/MC samples}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_MC_VeloMuon_P_Block1_old_new_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_MC_VeloMuon_P_Block5_old_new_comparison.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_MC_VeloMuon_P_Block8_old_new_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_MC_VeloMuon_P_new_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {MC VeloMuon track efficiencies in $p$}
+\end{frame}
+
+\begin{frame}{TrackCalib2 development 3}
+  \vspace{0.0cm}
+  {\large TrackCalib development 3: New data/MC samples}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_MC_Downstream_ETA_Block1_old_new_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_MC_Downstream_ETA_Block5_old_new_comparison.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_MC_Downstream_ETA_Block8_old_new_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_MC_Downstream_ETA_new_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Downstream VeloMuon track efficiencies in $\eta$}
+\end{frame}
+
+\begin{frame}{TrackCalib2 development 3}
+  \vspace{0.0cm}
+  {\large TrackCalib development 3: New data/MC samples}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_MC_Downstream_P_Block1_old_new_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_MC_Downstream_P_Block5_old_new_comparison.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_MC_Downstream_P_Block8_old_new_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_MC_Downstream_P_new_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {MC Downstream track efficiencies in $p$}
+\end{frame}
+
+\begin{frame}{TrackCalib2 development 3}
+  \vspace{0.0cm}
+  {\large TrackCalib development 3: New data/MC samples}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_MC_MuonUT_ETA_Block1_old_new_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_MC_MuonUT_ETA_Block5_old_new_comparison.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_MC_MuonUT_ETA_Block8_old_new_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_MC_MuonUT_ETA_new_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {MC MuonUT track efficiencies in $\eta$}
+\end{frame}
+
+\begin{frame}{TrackCalib2 development 3}
+  \vspace{0.0cm}
+  {\large TrackCalib development 3: New data/MC samples}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_MC_MuonUT_P_Block1_old_new_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_MC_MuonUT_P_Block5_old_new_comparison.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_MC_MuonUT_P_Block8_old_new_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_MC_MuonUT_P_new_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {MC MuonUT track efficiencies in $p$}
+\end{frame}
+
+\begin{frame}{TrackCalib2 development 3}
+  \vspace{0.0cm}
+  {\large TrackCalib development 3: New data/MC samples}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_VeloMuon_ETA_Block1_old_new_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_VeloMuon_ETA_Block5_old_new_comparison.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_VeloMuon_ETA_Block8_old_new_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_VeloMuon_ETA_new_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Data VeloMuon track efficiencies in $\eta$}
+\end{frame}
+
+\begin{frame}{TrackCalib2 development 3}
+  \vspace{0.0cm}
+  {\large TrackCalib development 3: New data/MC samples}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_VeloMuon_P_Block1_old_new_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_VeloMuon_P_Block5_old_new_comparison.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_VeloMuon_P_Block8_old_new_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_VeloMuon_P_new_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Data VeloMuon track efficiencies in $p$}
+\end{frame}
+
+\begin{frame}{TrackCalib2 development 3}
+  \vspace{0.0cm}
+  {\large TrackCalib development 3: New data/MC samples}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_Downstream_ETA_Block1_old_new_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_Downstream_ETA_Block5_old_new_comparison.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_Downstream_ETA_Block8_old_new_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_Downstream_ETA_new_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Data Downstream track efficiencies in $\eta$}
+\end{frame}
+
+\begin{frame}{TrackCalib2 development 3}
+  \vspace{0.0cm}
+  {\large TrackCalib development 3: New data/MC samples}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_Downstream_P_Block1_old_new_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_Downstream_P_Block5_old_new_comparison.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_Downstream_P_Block8_old_new_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_Downstream_P_new_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Data Downstream track efficiencies in $p$}
+\end{frame}
+
+\begin{frame}{TrackCalib2 development 3}
+  \vspace{0.0cm}
+  {\large TrackCalib development 3: New data/MC samples}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_MuonUT_ETA_Block1_old_new_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_MuonUT_ETA_Block5_old_new_comparison.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_MuonUT_ETA_Block8_old_new_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_MuonUT_ETA_new_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Data MuonUT track efficiencies in $\eta$}
+\end{frame}
+
+\begin{frame}{TrackCalib2 development 3}
+  \vspace{0.0cm}
+  {\large TrackCalib development 3: New data/MC samples}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_MuonUT_P_Block1_old_new_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_MuonUT_P_Block5_old_new_comparison.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_MuonUT_P_Block8_old_new_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_MuonUT_P_new_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Data MuonUT track efficiencies in $p$}
+\end{frame}
+
+\begin{frame}{TrackCalib2 development 3}
+  \vspace{0.0cm}
+  {\large TrackCalib development 3: New data/MC samples}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_ratio_ETA_1_new_samples.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_ratio_ETA_5_new_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_ratio_ETA_8_new_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Data/MC ratio for Combined/MuonUT track efficiencies in $\eta$}
+\end{frame}
+
+\begin{frame}{TrackCalib2 development 3}
+  \vspace{0.0cm}
+  {\large TrackCalib development 3: New data/MC samples}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_ratio_P_1_new_samples.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_ratio_P_5_new_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_ratio_P_8_new_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Data/MC ratio for Combined/MuonUT track efficiencies in $\eta$}
+\end{frame}
+
+\begin{frame}{New AP}
+  \vspace{0.0cm}
+  {\large Need to submit new APs:}
+  \begin{enumerate}
+    \setlength\itemsep{0.8em}
+    \item{Blocks 1, 5, 6, 7, 8 of 2024 data}
+    \begin{itemize}
+      \item{AP ready: \href{https://gitlab.cern.ch/lhcb-datapkg/AnalysisProductions/}{!xxx}}
+      \item{Include sprucing decision}
+      \item{Include DD4HEP binds}
+      \item{Apply tag muon TOS filter (removes around $75\%$ of candidates)}
+      \item{Remove unecessary tag muon overlap variables (removes around $20\%$ of branches)}
+    \end{itemize}
+    \item{Submit MC over block 1b MC}
+    \begin{itemize}
+      \item{AP ready: \href{https://gitlab.cern.ch/lhcb-datapkg/AnalysisProductions/}{!xxx}}
+    \end{itemize}
+    \item{Should we consider running block 2 as well?}
+    \begin{itemize}
+      \item{Need to check if we have MC}
+    \end{itemize}
+    \item{$pp$ reference run?}
+    \item{Might remove some older samples as well}
+    \begin{itemize}
+      \item{Track efficiency AP currently takes up 13 TB(!)}
+    \end{itemize}
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Summary}
+  \vspace{0.0cm}
+  \begin{enumerate}
+    \setlength\itemsep{1.0em}
+    \item{Standard environment for TrackCalib2 works}
+    \item{Briefly looked at impact of missing DD4HEP binds, impact seems to be significant but not understood yet}
+    \item{Sprucing decision inconsistency in block 5/6 has been resolved, understood to be inconsistent DD4HEP binds when rerunning reconstruction}
+    \item{Several updates to TrackCalib2:}
+    \begin{itemize}
+      \item{Run 1/2 stuff removed, we should create a separate release for Run 3}
+      \item{RDataFrame for sample preparation is much faster}
+      \item{New data/MC samples}
+      \begin{itemize}
+        \item[-]{Overlap functors for matching}
+        \item[-]{Sprucing decision filter included}
+      \end{itemize}
+      \item{New tracking efficiencies are consistent with previous samples once accounting for new matching criteria and sprucing decision}
+    \end{itemize}
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Next steps}
+  \vspace{0.0cm}
+  \begin{enumerate}
+    \setlength\itemsep{1.5em}
+    \item{Submit AP over 2024 data and block 1b MC}
+    \item{Optimise 2D binning scheme and produce 2D data/MC ratio tables for all 2024 blocks and $\mu^\pm$, $\mu^+$, $\mu^-$}
+    \item{Unfortunately I've had limited time to look into Combined/MuonUT discrepancies, but I'll try to do this in parallel}
+  \end{enumerate}
+\end{frame}
+
+\end{document}

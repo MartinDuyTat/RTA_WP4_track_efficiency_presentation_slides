@@ -1,0 +1,189 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Overleaf (WriteLaTeX) Example: Molecular Chemistry Presentation
+%
+% Source: http://www.overleaf.com
+%
+% In these slides we show how Overleaf can be used with standard
+% chemistry packages to easily create professional presentations.
+%
+% Feel free to distribute this example, but please keep the referral
+% to overleaf.com
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[xcolor={dvipsnames}]{beamer}
+
+\mode<presentation>
+{
+  \usetheme{Madrid}       % or try default, Darmstadt, Warsaw, ...
+  \usecolortheme{default} % or try albatross, beaver, crane, ...
+  \usefonttheme{default}    % or try default, structurebold, ...
+  \setbeamertemplate{navigation symbols}{}
+  \setbeamertemplate{caption}[numbered]
+}
+
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{graphicx}
+\usepackage{hyperref}
+  \hypersetup{colorlinks=true}
+  \hypersetup{urlcolor=blue}
+  \hypersetup{linkcolor = .}
+\usepackage{xcolor}
+\usepackage{siunitx}
+  \sisetup{separate-uncertainty = true}
+\DeclareSIUnit\barn{b}
+\usepackage{physics}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{subcaption}
+\usepackage[en-GB]{datetime2}
+\usepackage{overpic}
+\usepackage{feynmp}
+\DeclareGraphicsRule{*}{mps}{*}{}
+\usepackage{scalerel}
+\newcommand{\mylbrace}[2]{\vspace{#2pt}\hspace{6pt}\scaleleftright[\dimexpr5pt+#1\dimexpr0.06pt]{\lbrace}{\rule[\dimexpr2pt-#1\dimexpr0.5pt]{-4pt}{#1pt}}{.}}
+\newcommand{\myrbrace}[2]{\vspace{#2pt}\scaleleftright[\dimexpr5pt+#1\dimexpr0.06pt]{.}{\rule[\dimexpr2pt-#1\dimexpr0.5pt]{-4pt}{#1pt}}{\rbrace}\hspace{6pt}}
+
+% Trim in percent
+\usepackage{adjustbox}
+
+% No "Figure" prefix
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+% Nice decay amplitude diagrams
+\usepackage{amsmath,amssymb,tikz-cd}
+
+% Strike out text
+\usepackage[normalem]{ulem}
+
+% For figures with text overlay
+\usepackage{overpic}
+
+% Arrows
+\usepackage{tikz}
+\newcommand{\tikzmark}[1]{\tikz[remember picture] \node[coordinate] (#1) {#1};}
+
+% Colourbox with line breaks
+\newcommand{\cbox}[2][lime!20]{%
+  \colorbox{#1}{\parbox{\dimexpr\linewidth-2\fboxsep}{\strut #2\strut}}%
+}
+
+% Vector arrows
+\usepackage[pdftex]{pict2e}
+
+% Checkmark symbol
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
+
+% Here's where the presentation starts, with the info for the title slide
+\title[Heidelberg tracking meeting]{Plan for finalising TrackCalib2}
+
+\author[Martin Tat]{Martin Tat}
+\institute[Heidelberg]{Heidelberg University}
+\date{2nd December 2025}
+
+\titlegraphic{\includegraphics[height = 2.3cm]{lhcb.jpg}\hspace{1.0cm}~%
+              \includegraphics[height = 2.3cm]{HeidelbergLogo.pdf}}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% These three lines create an automatically generated table of contents.
+%\begin{frame}{Outline}
+%  \tableofcontents
+%\end{frame}
+
+\begin{frame}{Introduction}
+  \vspace{0.0cm}
+  {\Large Current situation:}
+  \vspace{0.2cm}
+  \begin{itemize}
+    \setlength\itemsep{0.8em}
+    \item{Analysis productions produce tuples...}
+    \item{... but there are two sets of analysis frameworks}
+    \begin{enumerate}
+      \item{Rowina's code}
+      \item{TrackCalib2}
+    \end{enumerate}
+    \item{In principle both should do the same job $\implies$}
+    \begin{itemize}
+      \item{Use TrackCalib2 by default}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Keeping TrackCalib2 up-to-date}
+  \vspace{0.0cm}
+  {\large Rowina, Maurice and I have gone through TrackCalib2 and Rowina's code to make sure everything is consistent}
+  \vspace{0.2cm}
+  \begin{enumerate}
+    \setlength\itemsep{0.5em}
+    \item{Selection criteria}
+    \item{Matching criteria}
+    \item{Fit range}
+    \item{Latest AP with data/MC tuples}
+    \item{Binning schemes}
+    \begin{itemize}
+      \item{Use Rowina's current 1D finer binning schemes in $p$ and $\eta$}
+      \item{In 2D, start from the 1D x 1D binning and merge bins until each bin has a sufficient number of VeloMuon x Downstream candidates}
+    \end{itemize}
+  \end{enumerate}
+  \begin{itemize}
+    \item{Updating 1--4 in TrackCalib2 is work in progress}
+    \item{Fancy 2D binning needs more thinking and code refactoring}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Developments in progess}
+  \vspace{0.0cm}
+  {\large TrackCalib2 needs more flexibility like Rowina's code:}
+  \vspace{0.2cm}
+  \begin{enumerate}
+    \item{Tuple preparation is currently by far the biggest bottlekneck}
+    \begin{itemize}
+      \item{Aim: Perform offline selection of new tuples on-the-fly}
+      \item{Current status: Tuples take hours to produce and each data block takes over 10 GB of space}
+      \item{Bottlekneck: Uproot processes hundreds of files, but only one at the time, without any parallelisation}
+      \item{Solution: Change to RDataFrame, which performs selections lazily and multithreaded, and only save necessary variables}
+      \item{I am currently working on this}
+    \end{itemize}
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Developments in progess}
+  \vspace{0.0cm}
+  {\large TrackCalib2 needs more flexibility like Rowina's code:}
+  \vspace{0.2cm}
+  \begin{enumerate}
+    \setcounter{enumi}{1}
+    \item{Fitting can take time when tweaking or doing studies}
+    \begin{itemize}
+      \item{Aim: Fit different 1D and 2D binning schemes, and allow for single-bin fits, potentially in parallel}
+      \item{Current status: Same 1D and 2D binning is used, and every single 1D and 2D bin is fitted each time}
+      \item{Solution: Need to rethink how to save fit results}
+      \item{This is the next task}
+      \item[]{}
+      \item[]{}
+    \end{itemize}
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{What is the end goal?}
+  \vspace{0.0cm}
+  {\large Why am I doing this?}
+  \vspace{0.2cm}
+  \begin{itemize}
+    \setlength\itemsep{0.8em}
+    \item{Have a tool that can produce tracking efficiencies out-of-the-box}
+    \item{Quickly produce correction tables when new data/MC is available}
+    \item{Allows for more efficient debugging of current issues:}
+    \begin{enumerate}
+      \item{MuonUT vs Combined discrepancies}
+      \item{Blocks 5/6 and 7/8 discrepancies}
+    \end{enumerate}
+  \end{itemize}
+\end{frame}
+
+\end{document}

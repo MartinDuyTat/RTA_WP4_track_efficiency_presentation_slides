@@ -1,0 +1,388 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Overleaf (WriteLaTeX) Example: Molecular Chemistry Presentation
+%
+% Source: http://www.overleaf.com
+%
+% In these slides we show how Overleaf can be used with standard
+% chemistry packages to easily create professional presentations.
+%
+% Feel free to distribute this example, but please keep the referral
+% to overleaf.com
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[xcolor={dvipsnames}]{beamer}
+
+\mode<presentation>
+{
+  \usetheme{Madrid}       % or try default, Darmstadt, Warsaw, ...
+  \usecolortheme{default} % or try albatross, beaver, crane, ...
+  \usefonttheme{default}    % or try default, structurebold, ...
+  \setbeamertemplate{navigation symbols}{}
+  \setbeamertemplate{caption}[numbered]
+}
+
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{graphicx}
+\usepackage{hyperref}
+  \hypersetup{colorlinks=true}
+  \hypersetup{urlcolor=blue}
+  \hypersetup{linkcolor = .}
+\usepackage{xcolor}
+\usepackage{siunitx}
+  \sisetup{separate-uncertainty = true}
+\DeclareSIUnit\barn{b}
+\usepackage{physics}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{subcaption}
+\usepackage[en-GB]{datetime2}
+\usepackage{overpic}
+\usepackage{feynmp}
+\DeclareGraphicsRule{*}{mps}{*}{}
+\usepackage{scalerel}
+\newcommand{\mylbrace}[2]{\vspace{#2pt}\hspace{6pt}\scaleleftright[\dimexpr5pt+#1\dimexpr0.06pt]{\lbrace}{\rule[\dimexpr2pt-#1\dimexpr0.5pt]{-4pt}{#1pt}}{.}}
+\newcommand{\myrbrace}[2]{\vspace{#2pt}\scaleleftright[\dimexpr5pt+#1\dimexpr0.06pt]{.}{\rule[\dimexpr2pt-#1\dimexpr0.5pt]{-4pt}{#1pt}}{\rbrace}\hspace{6pt}}
+
+% Trim in percent
+\usepackage{adjustbox}
+
+% No "Figure" prefix
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+% Nice decay amplitude diagrams
+\usepackage{amsmath,amssymb,tikz-cd}
+
+% Strike out text
+\usepackage[normalem]{ulem}
+
+% For figures with text overlay
+\usepackage{overpic}
+
+% Arrows
+\usepackage{tikz}
+\newcommand{\tikzmark}[1]{\tikz[remember picture] \node[coordinate] (#1) {#1};}
+
+% Colourbox with line breaks
+\newcommand{\cbox}[2][lime!20]{%
+  \colorbox{#1}{\parbox{\dimexpr\linewidth-2\fboxsep}{\strut #2\strut}}%
+}
+
+% Vector arrows
+\usepackage[pdftex]{pict2e}
+
+% Checkmark symbol
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
+
+% Here's where the presentation starts, with the info for the title slide
+\title[Heidelberg tracking meeting]{Impact of wrong matching on tracking efficiencies}
+
+\author[Martin Tat]{Martin Tat}
+\institute[Heidelberg]{Heidelberg University}
+\date{2nd December 2025}
+
+\titlegraphic{\includegraphics[height = 2.3cm]{lhcb.jpg}\hspace{1.0cm}~%
+              \includegraphics[height = 2.3cm]{HeidelbergLogo.pdf}}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% These three lines create an automatically generated table of contents.
+%\begin{frame}{Outline}
+%  \tableofcontents
+%\end{frame}
+
+\begin{frame}{Introduction}
+  \vspace{0.0cm}
+  {\Large Current work:}
+  \vspace{0.2cm}
+  \begin{itemize}
+    \setlength\itemsep{0.8em}
+    \item{Study discrepancy between Combined and MuonUT methods}
+    \begin{itemize}
+      \item{Discrepancies up to $2\%$, mostly at low $p$ and low $\eta$}
+      \item{Effect present in data and MC, but much worse in data}
+      \item{Not fully cancelled in the data/MC ratio}
+    \end{itemize}
+    \item{Currently looking into how wrong long track matching affects the tracking efficiencies in MC}
+    \begin{itemize}
+      \item{Get an understanding of MC discrepancies, which may help us understand the discrepancies in data}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Block 5 tracking efficiencies}
+  \vspace{0.0cm}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackEff_MC_Sim10d_2024_Block5_Combined_P-ETA.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackEff_MC_Sim10d_2024_Block5_MuonUT_P-ETA.pdf}
+    \end{subfigure}
+  \end{figure}
+  \begin{itemize}
+    \item{Effect is worse in data}
+    \item{Does not seem to cancel in data/MC ratio}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Checks performed}
+  \vspace{0.0cm}
+  {\large Current work: Try to understand why this discrepancy exists in MC, and whether or not it could explain some of the discrepancy in data}
+  \vspace{0.2cm}
+  \begin{itemize}
+    \setlength\itemsep{0.8em}
+    \item{Different kinematics?}
+    \begin{itemize}
+      \item{Finer bins still show discrepancies}
+    \end{itemize}
+    \item{MuonUT charge asymmetry bug?}
+    \begin{itemize}
+      \item{Fits split by charge consistent with charge integrated results}
+    \end{itemize}
+    \item{Bad fit model or counting bias?}
+    \begin{itemize}
+      \item{Truth matched MC still shows discrepancies}
+    \end{itemize}
+    \item{Problem must be somewhere further upstream...}
+    \begin{itemize}
+      \item{... so I looked into how the matching is performed}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Checks performed}
+  \vspace{0.0cm}
+  {\large Matching is performed by compared hits in each subdetector}
+  \vspace{0.2cm}
+  \begin{center}
+    \begin{tabular}{ccccc}
+      \hline
+      Method     & Velo  & UT & SciFi & Muon \\
+      \hline
+      VeloMuon   & $0.4$ & -- & --    & $0.4$ \\
+      Downstream & --    & -- & $0.4$ & $0.4$ \\
+      MuonUT     & --    & -- & --    & $0.4$ \\
+      \hline
+    \end{tabular}
+  \end{center}
+  \begin{itemize}
+    \setlength\itemsep{0.8em}
+    \item{Probe track is perhaps matched to a random long track}
+    \item{Especially for MuonUT, which only has 4 hits in the Muon system, this effect should be checked}
+    \item{Strategy: Copy Rowina's AP on MC and add long track truth info}
+    \begin{itemize}
+      \item{Compare \texttt{TRUEKEY} between probe track and long track}
+    \end{itemize}
+    \item{Only one file available on the AP, sufficient for preliminary checks}
+    \begin{itemize}
+      \item{AP still running}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Tracking efficiencies on truth matched yields}
+  \vspace{0.0cm}
+  {\large Calculate tracking efficiencies on truth matched yields (no fitting)}
+  \vspace{0.2cm}
+  \begin{center}
+    \small
+    \begin{tabular}{ccccc}
+      \hline
+      Method     & Charge & $N_{\rm pass}$ ($\times10^4$) & $N_{\rm fail}$ ($\times10^4$) & $\epsilon$ \\
+      \hline
+      VeloMuon   & $\mu^+$ & $9.144 \pm 0.030$ & $0.265 \pm 0.005$   & $0.9719 \pm 0.0005$ \\
+      Downstream & $\mu^+$ & $6.426 \pm 0.025$ & $0.0420 \pm 0.0020$ & $0.99351 \pm 0.00032$ \\
+      Combined   & $\mu^+$ & --           & --                       & $0.9656 \pm 0.0006$ \\
+      MuonUT     & $\mu^+$ & $1.617 \pm 0.013$ & $0.0304 \pm 0.0017$ & $0.9815 \pm 0.0010$ \\
+      \hline
+      VeloMuon   & $\mu^-$ & $9.187 \pm 0.030$ & $0.269 \pm 0.005$   & $0.9715 \pm 0.0005$ \\
+      Downstream & $\mu^-$ & $6.426 \pm 0.025$ & $0.0471 \pm 0.0022$ & $0.99272 \pm 0.00033$ \\
+      Combined   & $\mu^-$ & --           & --                       & $0.9644 \pm 0.0006$ \\
+      MuonUT     & $\mu^-$ & $1.490 \pm 0.012$ & $0.0282 \pm 0.0017$ & $0.9814 \pm 0.0011$ \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Fraction of wrongly matched tracks}
+  \vspace{0.0cm}
+  {\large How often is the matched long track wrong?}
+  \vspace{0.2cm}
+  \begin{center}
+    \begin{tabular}{ccccc}
+      \hline
+      Method     & Charge & $N_{\rm pass}$ & $N_{\rm pass}^{\rm wrong}$ & Correction \\
+      \hline
+      VeloMuon   & $\mu^+$ & $91438 \pm 302$ & $67 \pm 8$    & $0.99927 \pm 0.00009$ \\
+      Downstream & $\mu^+$ & $64251 \pm 253$ & $1569 \pm 40$ & $0.9756 \pm 0.0006$ \\
+      MuonUT     & $\mu^+$ & $16169 \pm 127$ & $670 \pm 26$  & $0.9586 \pm 0.0016$ \\
+      \hline
+      VeloMuon   & $\mu^-$ & $91868 \pm 303$ & $89 \pm 9$    & $0.99903 \pm 0.00010$ \\
+      Downstream & $\mu^-$ & $64247 \pm 253$ & $1428 \pm 38$ & $0.9778 \pm 0.0006$ \\
+      MuonUT     & $\mu^-$ & $14901 \pm 122$ & $533 \pm 23$  & $0.9642 \pm 0.0015$ \\
+      \hline
+    \end{tabular}
+  \end{center}
+  \vspace{0.5cm}
+  {\large Correction factor: $(N_{\rm pass} - N_{\rm pass}^{\rm wrong}) / N_{\rm pass}$}
+\end{frame}
+
+\begin{frame}{Corrected tracking efficiencies on truth matched yields}
+  \vspace{0.0cm}
+  {\large Multiply tracking efficiencies with correction factors}
+  \vspace{0.2cm}
+  \begin{center}
+    \begin{tabular}{ccc}
+      \hline
+      Method     & Charge & $\epsilon$ \\
+      \hline
+      VeloMuon   & $\mu^+$ & $0.9712 \pm 0.0005$ \\
+      Downstream & $\mu^+$ & $0.9692 \pm 0.0007$ \\
+      Combined   & $\mu^+$ & $0.9413 \pm 0.0008$ \\
+      MuonUT     & $\mu^+$ & $0.9409 \pm 0.0018$ \\
+      \hline
+      VeloMuon   & $\mu^-$ & $0.9706 \pm 0.0005$ \\
+      Downstream & $\mu^-$ & $0.9707 \pm 0.0007$ \\
+      Combined   & $\mu^-$ & $0.9421 \pm 0.0008$ \\
+      MuonUT     & $\mu^-$ & $0.9463 \pm 0.0018$ \\
+      \hline
+      Combined   & $\mu^\pm$ & $0.9417 \pm 0.0006$ \\
+      MuonUT     & $\mu^\pm$ & $0.9436 \pm 0.0013$ \\
+      \hline
+    \end{tabular}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Wrong matching kinematic dependence}
+  \vspace{0.0cm}
+  \begin{itemize}
+    \setlength\itemsep{1.0em}
+    \item{I also checked in $p$ and $\eta$ bins, but didn't have time to make plots}
+    \item{Still see discrepancies within each bin, but statistics are really low}
+    \item{Work in progress to understand what's going on}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Wrong matching kinematic dependence}
+  \vspace{0.0cm}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.38\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/VeloMuon_muprobe_P_wrong_matching.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.38\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/Downstream_muprobe_P_wrong_matching.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.38\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/MuonUT_muprobe_P_wrong_matching.pdf}
+    \end{subfigure}
+  \end{figure}
+  \begin{itemize}
+    \item{No clear kinematic dependence with current statistics...}
+    \item{Correctly matched in black, wrongly matched in blue}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Wrong matching kinematic dependence}
+  \vspace{0.0cm}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.38\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/VeloMuon_muprobe_ETA_wrong_matching.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.38\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/Downstream_muprobe_ETA_wrong_matching.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.38\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/MuonUT_muprobe_ETA_wrong_matching.pdf}
+    \end{subfigure}
+  \end{figure}
+  \begin{itemize}
+    \item{No clear kinematic dependence with current statistics...}
+    \item{Correctly matched in black, wrongly matched in blue}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Wrong matching kinematic dependence}
+  \vspace{0.0cm}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.38\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/VeloMuon_nLongTracks_wrong_matching.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.38\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/Downstream_nLongTracks_wrong_matching.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.38\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/MuonUT_nLongTracks_wrong_matching.pdf}
+    \end{subfigure}
+  \end{figure}
+  \begin{itemize}
+    \item{No clear kinematic dependence with current statistics...}
+    \item{Correctly matched in black, wrongly matched in blue}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Wrong matching kinematic dependence}
+  \vspace{0.0cm}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.38\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/VeloMuon_nFTClusters_wrong_matching.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.38\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/Downstream_nFTClusters_wrong_matching.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.38\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/MuonUT_nFTClusters_wrong_matching.pdf}
+    \end{subfigure}
+  \end{figure}
+  \begin{itemize}
+    \item{No clear kinematic dependence with current statistics...}
+    \item{Correctly matched in black, wrongly matched in blue}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Summary and next steps}
+  \vspace{0.0cm}
+  \begin{itemize}
+    \setlength\itemsep{0.7em}
+    \item{Matching to the wrong long track occurs more often with MuonUT method, potentially leading to biased tracking efficiencies}
+    \item{After correcting for this using MC truth information, discrepancy seems to be gone}
+    \item{No clear kinematics dependence, but waiting for more statistics}
+    \begin{itemize}
+      \item{AP with more MC is currently running}
+    \end{itemize}
+    \item{Next steps:}
+    \begin{enumerate}
+      \item{Figure out if there is any other kinematic dependencies}
+      \item{Understand if this effect cancels in the data/MC ratio?}
+    \end{enumerate}
+  \end{itemize}
+  \vspace{0.3cm}
+  \begin{center}
+    \Huge Thanks for listening!
+  \end{center}
+\end{frame}
+
+\end{document}
