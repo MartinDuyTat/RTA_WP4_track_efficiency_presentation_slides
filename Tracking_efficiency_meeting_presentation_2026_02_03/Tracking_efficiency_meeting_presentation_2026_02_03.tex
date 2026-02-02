@@ -1,0 +1,375 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Overleaf (WriteLaTeX) Example: Molecular Chemistry Presentation
+%
+% Source: http://www.overleaf.com
+%
+% In these slides we show how Overleaf can be used with standard
+% chemistry packages to easily create professional presentations.
+%
+% Feel free to distribute this example, but please keep the referral
+% to overleaf.com
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[xcolor={dvipsnames}]{beamer}
+
+\mode<presentation>
+{
+  \usetheme{Madrid}       % or try default, Darmstadt, Warsaw, ...
+  \usecolortheme{default} % or try albatross, beaver, crane, ...
+  \usefonttheme{default}    % or try default, structurebold, ...
+  \setbeamertemplate{navigation symbols}{}
+  \setbeamertemplate{caption}[numbered]
+}
+
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{graphicx}
+\usepackage{hyperref}
+  \hypersetup{colorlinks=true}
+  \hypersetup{urlcolor=blue}
+  \hypersetup{linkcolor = .}
+\usepackage{xcolor}
+\usepackage{siunitx}
+  \sisetup{separate-uncertainty = true}
+\DeclareSIUnit\barn{b}
+\usepackage{physics}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{subcaption}
+\usepackage[en-GB]{datetime2}
+\usepackage{overpic}
+\usepackage{feynmp}
+\DeclareGraphicsRule{*}{mps}{*}{}
+\usepackage{scalerel}
+\newcommand{\mylbrace}[2]{\vspace{#2pt}\hspace{6pt}\scaleleftright[\dimexpr5pt+#1\dimexpr0.06pt]{\lbrace}{\rule[\dimexpr2pt-#1\dimexpr0.5pt]{-4pt}{#1pt}}{.}}
+\newcommand{\myrbrace}[2]{\vspace{#2pt}\scaleleftright[\dimexpr5pt+#1\dimexpr0.06pt]{.}{\rule[\dimexpr2pt-#1\dimexpr0.5pt]{-4pt}{#1pt}}{\rbrace}\hspace{6pt}}
+
+% Trim in percent
+\usepackage{adjustbox}
+
+% No "Figure" prefix
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+% Nice decay amplitude diagrams
+\usepackage{amsmath,amssymb,tikz-cd}
+
+% Strike out text
+\usepackage[normalem]{ulem}
+
+% For figures with text overlay
+\usepackage{overpic}
+
+% Arrows
+\usepackage{tikz}
+\newcommand{\tikzmark}[1]{\tikz[remember picture] \node[coordinate] (#1) {#1};}
+
+% Colourbox with line breaks
+\newcommand{\cbox}[2][lime!20]{%
+  \colorbox{#1}{\parbox{\dimexpr\linewidth-2\fboxsep}{\strut #2\strut}}%
+}
+
+% Vector arrows
+\usepackage[pdftex]{pict2e}
+
+% Checkmark symbol
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
+
+% Here's where the presentation starts, with the info for the title slide
+\title[Heidelberg tracking meeting]{Progress update on tracking efficiencies}
+
+\author[Martin Tat]{Martin Tat}
+\institute[Heidelberg]{Heidelberg University}
+\date{3rd February 2026}
+
+\titlegraphic{\includegraphics[height = 2.3cm]{lhcb.jpg}\hspace{1.0cm}~%
+              \includegraphics[height = 2.3cm]{HeidelbergLogo.pdf}}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% These three lines create an automatically generated table of contents.
+%\begin{frame}{Outline}
+%  \tableofcontents
+%\end{frame}
+
+\begin{frame}{Recap from last time}
+  \vspace{0.0cm}
+  {\Large As discussed last time:}
+  \vspace{0.2cm}
+  \begin{itemize}
+    \setlength\itemsep{0.8em}
+    \item{Improvements to TrackCalib2}
+    \begin{itemize}
+      \item[-]{Relatively easy to produce efficiencies from AP}
+    \end{itemize}
+    \item{AP submitted for blocks 1, 5, 6, 7, 8 for data with correct DD4HEP binds and sprucing decision}
+    \begin{itemize}
+      \item[-]{These are now $99\%$ finished, today I'll show the results}
+      \item[-]{Small issue discovered: MuonUT method is broken in block 1, so we'll have to remove the sprucing decision (negligible impact, but method is probably biased anyway)}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Efficiency comparisons}
+  \vspace{0.0cm}
+  {\large Comparison with and without DD4HEP binds}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_VeloMuon_ETA_Block1_dd4hep_binds_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_VeloMuon_ETA_Block5_dd4hep_binds_comparison.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_VeloMuon_ETA_Block8_dd4hep_binds_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_VeloMuon_ETA_new_dd4hep_binds_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Data VeloMuon track efficiencies in $\eta$}
+\end{frame}
+
+\begin{frame}{Efficiency comparisons}
+  \vspace{0.0cm}
+  {\large Comparison with and without DD4HEP binds}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_VeloMuon_P_Block1_dd4hep_binds_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_VeloMuon_P_Block5_dd4hep_binds_comparison.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_VeloMuon_P_Block8_dd4hep_binds_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_VeloMuon_P_new_dd4hep_binds_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Data VeloMuon track efficiencies in $p$}
+\end{frame}
+
+\begin{frame}{Efficiency comparisons}
+  \vspace{0.0cm}
+  {\large Comparison with and without DD4HEP binds}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_Downstream_ETA_Block1_dd4hep_binds_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_Downstream_ETA_Block5_dd4hep_binds_comparison.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_Downstream_ETA_Block8_dd4hep_binds_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_Downstream_ETA_new_dd4hep_binds_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Data Downstream track efficiencies in $\eta$}
+\end{frame}
+
+\begin{frame}{Efficiency comparisons}
+  \vspace{0.0cm}
+  {\large Comparison with and without DD4HEP binds}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_Downstream_P_Block1_dd4hep_binds_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_Downstream_P_Block5_dd4hep_binds_comparison.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_Downstream_P_Block8_dd4hep_binds_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_Downstream_P_new_dd4hep_binds_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Data Downstream track efficiencies in $p$}
+\end{frame}
+
+\begin{frame}{Efficiency comparisons}
+  \vspace{0.0cm}
+  {\large Comparison with and without DD4HEP binds}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_MuonUT_ETA_Block1_dd4hep_binds_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_MuonUT_ETA_Block5_dd4hep_binds_comparison.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_MuonUT_ETA_Block8_dd4hep_binds_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_MuonUT_ETA_new_dd4hep_binds_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Data MuonUT track efficiencies in $\eta$}
+\end{frame}
+
+\begin{frame}{Efficiency comparisons}
+  \vspace{0.0cm}
+  {\large Comparison with and without DD4HEP binds}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_MuonUT_P_Block1_dd4hep_binds_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_MuonUT_P_Block5_dd4hep_binds_comparison.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_MuonUT_P_Block8_dd4hep_binds_comparison.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.7\textwidth]{Plots/trackeff_Data_MuonUT_P_new_dd4hep_binds_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Data MuonUT track efficiencies in $p$}
+\end{frame}
+
+\begin{frame}{Tracking efficiency data/MC ratio}
+  \vspace{0.0cm}
+  {\large Data/MC ratio}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.33\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_ETA_Block1_new_dd4hep_binds_samples.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.33\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_ETA_Block5_new_dd4hep_binds_samples.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.33\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_ETA_Block6_new_dd4hep_binds_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.33\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_ETA_Block7_new_dd4hep_binds_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.33\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_ETA_Block8_new_dd4hep_binds_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Data/MC ratio for Combined/MuonUT track efficiencies in $\eta$}
+\end{frame}
+
+\begin{frame}{Tracking efficiency data/MC ratio}
+  \vspace{0.0cm}
+  {\large Data/MC ratio}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.33\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_P_Block1_new_dd4hep_binds_samples.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.33\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_P_Block5_new_dd4hep_binds_samples.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.33\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_P_Block6_new_dd4hep_binds_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.33\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_P_Block7_new_dd4hep_binds_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.33\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_P_Block8_new_dd4hep_binds_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Data/MC ratio for Combined/MuonUT track efficiencies in $p$}
+\end{frame}
+
+\begin{frame}{To do list from last time}
+  \vspace{0.0cm}
+  \begin{enumerate}
+    \setlength\itemsep{0.4em}
+    \item{AP for blocks 1, 5, 6, 7, 8 of 2024 data}
+    \begin{itemize}
+      \item{Done}
+    \end{itemize}
+    \item{We should run over block 2 as well}
+    \begin{itemize}
+      \item{MC request delayed because of liason change, request not approved yet...}
+    \end{itemize}
+    \item{MC for block 1b}
+    \begin{itemize}
+      \item{MC request was stuck for 1 month, but with more poking Gloria approved and it's in production now}
+    \end{itemize}
+    \item{2025 pre-TS data}
+    \begin{itemize}
+      \item{MC is ready, need to create AP over data/MC}
+    \end{itemize}
+    \item{2024 $pp$ reference run}
+    \begin{itemize}
+      \item{MC is ready, need to create AP over data/MC}
+    \end{itemize}
+    \item{Tidy up AP}
+    \begin{itemize}
+      \item{Low priority for now}
+    \end{itemize}
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Summary and next steps}
+  \vspace{0.0cm}
+  \begin{enumerate}
+    \setlength\itemsep{0.4em}
+    \item{Proceed with calculating efficiencies for:}
+    \begin{itemize}
+      \item{2024 blocks 2, 1 (1a and 1b), 5, 6, 7, 8}
+      \item{2024 $pp$ ref}
+      \item{2025 pre-TS}
+    \end{itemize}
+    \item{Determine an optimised 2D binning scheme and provide $\mu^+$, $\mu^-$, $\mu^\pm$ tracking efficiencies}
+    \begin{itemize}
+      \item{Question: We need larger MC samples, can we get PPG approval for a large MC request?}
+      \item{Can take Combined vs MuonUT discrepancy as systematic, but this requires some thinking because some blocks are biased or have insufficient statistics}
+      \item{Need to include other systematics as well, but don't expect these to be leading}
+    \end{itemize}
+    \item{Find time to look into Combined/MuonUT discrepancies...}
+  \end{enumerate}
+\end{frame}
+
+\end{document}
