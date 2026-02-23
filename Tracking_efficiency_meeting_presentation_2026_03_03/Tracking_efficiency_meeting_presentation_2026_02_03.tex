@@ -1,0 +1,394 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Overleaf (WriteLaTeX) Example: Molecular Chemistry Presentation
+%
+% Source: http://www.overleaf.com
+%
+% In these slides we show how Overleaf can be used with standard
+% chemistry packages to easily create professional presentations.
+%
+% Feel free to distribute this example, but please keep the referral
+% to overleaf.com
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[xcolor={dvipsnames}]{beamer}
+
+\mode<presentation>
+{
+  \usetheme{Madrid}       % or try default, Darmstadt, Warsaw, ...
+  \usecolortheme{default} % or try albatross, beaver, crane, ...
+  \usefonttheme{default}    % or try default, structurebold, ...
+  \setbeamertemplate{navigation symbols}{}
+  \setbeamertemplate{caption}[numbered]
+}
+
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{graphicx}
+\usepackage{hyperref}
+  \hypersetup{colorlinks=true}
+  \hypersetup{urlcolor=blue}
+  \hypersetup{linkcolor = .}
+\usepackage{xcolor}
+\usepackage{siunitx}
+  \sisetup{separate-uncertainty = true}
+\DeclareSIUnit\barn{b}
+\usepackage{physics}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{subcaption}
+\usepackage[en-GB]{datetime2}
+\usepackage{overpic}
+\usepackage{feynmp}
+\DeclareGraphicsRule{*}{mps}{*}{}
+\usepackage{scalerel}
+\newcommand{\mylbrace}[2]{\vspace{#2pt}\hspace{6pt}\scaleleftright[\dimexpr5pt+#1\dimexpr0.06pt]{\lbrace}{\rule[\dimexpr2pt-#1\dimexpr0.5pt]{-4pt}{#1pt}}{.}}
+\newcommand{\myrbrace}[2]{\vspace{#2pt}\scaleleftright[\dimexpr5pt+#1\dimexpr0.06pt]{.}{\rule[\dimexpr2pt-#1\dimexpr0.5pt]{-4pt}{#1pt}}{\rbrace}\hspace{6pt}}
+
+% Trim in percent
+\usepackage{adjustbox}
+
+% No "Figure" prefix
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+% Nice decay amplitude diagrams
+\usepackage{amsmath,amssymb,tikz-cd}
+
+% Strike out text
+\usepackage[normalem]{ulem}
+
+% For figures with text overlay
+\usepackage{overpic}
+
+% Arrows
+\usepackage{tikz}
+\newcommand{\tikzmark}[1]{\tikz[remember picture] \node[coordinate] (#1) {#1};}
+
+% Colourbox with line breaks
+\newcommand{\cbox}[2][lime!20]{%
+  \colorbox{#1}{\parbox{\dimexpr\linewidth-2\fboxsep}{\strut #2\strut}}%
+}
+
+% Vector arrows
+\usepackage[pdftex]{pict2e}
+
+% Checkmark symbol
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
+
+% Here's where the presentation starts, with the info for the title slide
+\title[Heidelberg tracking meeting]{Progress update on tracking efficiencies}
+
+\author[Martin Tat]{Martin Tat}
+\institute[Heidelberg]{Heidelberg University}
+\date{3rd March 2026}
+
+\titlegraphic{\includegraphics[height = 2.3cm]{lhcb.jpg}\hspace{1.0cm}~%
+              \includegraphics[height = 2.3cm]{HeidelbergLogo.pdf}}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% These three lines create an automatically generated table of contents.
+%\begin{frame}{Outline}
+%  \tableofcontents
+%\end{frame}
+
+\begin{frame}{Current progress}
+  \vspace{0.0cm}
+  {\Large Current progress on tracking efficiencies:}
+  \vspace{0.2cm}
+  \begin{itemize}
+    \setlength\itemsep{0.8em}
+    \item{Recap from last time:}
+    \begin{itemize}
+      \item[-]{Tracking efficiencies produced for blocks 1, 5, 6, 7, 8}
+      \item[-]{Only 1D binning in $p$ and $\eta$ for now}
+    \end{itemize}
+    \item{What's new today?}
+    \begin{itemize}
+      \item[-]{MC for 2024 block 2 and $pp$ ref run produced}
+      \item[-]{AP over block 2, $pp$ ref and 2025 pre-TS data/MC done}
+      \item[-]{Tracking efficiencies in 1D produced for these datasets}
+      \item[-]{Comparison between block 1a and block 1b MC ready}
+      \item[-]{Prepare to present results in WP4}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Block 1a vs 1b}
+  \vspace{0.0cm}
+  {\large Block 1a (fills 9982--10012, top) vs 1b (fills 10017--10056, bottom)}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.75\textwidth]{Plots/trackeff_Data_VeloMuon_ETA_block1a_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.75\textwidth]{Plots/trackeff_MC_VeloMuon_ETA_block1a_samples.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.75\textwidth]{Plots/trackeff_Data_VeloMuon_ETA_block1b_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.755\textwidth]{Plots/trackeff_MC_VeloMuon_ETA_block1b_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {SciFi T2L0Q0M1H0 FE was excluded on 17th August}
+\end{frame}
+
+\begin{frame}{Efficiency comparisons}
+  \vspace{0.0cm}
+  {\large Comparison of tracking efficiencies in all data blocks}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.75\textwidth]{Plots/trackeff_Data_VeloMuon_P_default_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.75\textwidth]{Plots/trackeff_Data_VeloMuon_ETA_default_samples.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.75\textwidth]{Plots/trackeff_MC_VeloMuon_P_default_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.75\textwidth]{Plots/trackeff_MC_VeloMuon_ETA_default_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {VeloMuon track efficiencies}
+\end{frame}
+
+\begin{frame}{Efficiency comparisons}
+  \vspace{0.0cm}
+  {\large Comparison of tracking efficiencies in all data blocks}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.75\textwidth]{Plots/trackeff_Data_Downstream_P_default_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.75\textwidth]{Plots/trackeff_Data_Downstream_ETA_default_samples.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.75\textwidth]{Plots/trackeff_MC_Downstream_P_default_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.75\textwidth]{Plots/trackeff_MC_Downstream_ETA_default_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Downstream track efficiencies}
+\end{frame}
+
+\begin{frame}{Efficiency comparisons}
+  \vspace{0.0cm}
+  {\large Comparison of tracking efficiencies in all data blocks}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.75\textwidth]{Plots/trackeff_Data_MuonUT_P_default_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.75\textwidth]{Plots/trackeff_Data_MuonUT_ETA_default_samples.pdf}
+    \end{subfigure}
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.75\textwidth]{Plots/trackeff_MC_MuonUT_P_default_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=0.75\textwidth]{Plots/trackeff_MC_MuonUT_ETA_default_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {MuonUT track efficiencies}
+\end{frame}
+
+\begin{frame}{Tracking efficiency data/MC ratio}
+  \vspace{0.0cm}
+  {\large Data/MC ratio}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_ETA_2024_Block2_default_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_P_2024_Block2_default_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Data/MC ratio for Combined/MuonUT track efficiencies block 2}
+\end{frame}
+
+\begin{frame}{Tracking efficiency data/MC ratio}
+  \vspace{0.0cm}
+  {\large Data/MC ratio}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_ETA_2024_Block1a_default_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_P_2024_Block1a_default_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Data/MC ratio for Combined/MuonUT track efficiencies block 1a}
+\end{frame}
+
+\begin{frame}{Tracking efficiency data/MC ratio}
+  \vspace{0.0cm}
+  {\large Data/MC ratio}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_ETA_2024_Block1b_default_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_P_2024_Block1b_default_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Data/MC ratio for Combined/MuonUT track efficiencies block 1b}
+\end{frame}
+
+\begin{frame}{Tracking efficiency data/MC ratio}
+  \vspace{0.0cm}
+  {\large Data/MC ratio}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_ETA_2024_Block5_default_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_P_2024_Block5_default_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Data/MC ratio for Combined/MuonUT track efficiencies block 5}
+\end{frame}
+
+\begin{frame}{Tracking efficiency data/MC ratio}
+  \vspace{0.0cm}
+  {\large Data/MC ratio}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_ETA_2024_Block6_default_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_P_2024_Block6_default_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Data/MC ratio for Combined/MuonUT track efficiencies block 6}
+\end{frame}
+
+\begin{frame}{Tracking efficiency data/MC ratio}
+  \vspace{0.0cm}
+  {\large Data/MC ratio}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_ETA_2024_Block7_default_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_P_2024_Block7_default_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Data/MC ratio for Combined/MuonUT track efficiencies block 7}
+\end{frame}
+
+\begin{frame}{Tracking efficiency data/MC ratio}
+  \vspace{0.0cm}
+  {\large Data/MC ratio}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_ETA_2024_Block8_default_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_P_2024_Block8_default_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Data/MC ratio for Combined/MuonUT track efficiencies block 8}
+\end{frame}
+
+\begin{frame}{Tracking efficiency data/MC ratio}
+  \vspace{0.0cm}
+  {\large Data/MC ratio}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_ETA_2024_ppref_default_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_P_2024_ppref_default_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Data/MC ratio for Combined/MuonUT track efficiencies $pp$ ref run}
+\end{frame}
+
+\begin{frame}{Tracking efficiency data/MC ratio}
+  \vspace{0.0cm}
+  {\large Data/MC ratio}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_ETA_2025_c1_default_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_P_2025_c1_default_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Data/MC ratio for Combined/MuonUT track efficiencies 2025 pre-TS}
+\end{frame}
+
+\begin{frame}{Summary and next steps}
+  \vspace{0.0cm}
+  \begin{enumerate}
+    \setlength\itemsep{0.4em}
+    \item{I think we can release a preliminary set of tracking efficiencies to the collaboration}
+    \begin{itemize}
+      \item{2024 blocks 2, 1 (maybe 1a and 1b), 5, 6, 7, 8}
+      \item{2024 $pp$ ref}
+      \item{2025 pre-TS}
+      \item{2025 post-TS with pre-TS MC?}
+    \end{itemize}
+    \item{Next steps:}
+    \begin{itemize}
+      \item{Show the current results to WP4}
+      \item{If no issues are raised, request larger MC samples with PPG permission}
+      \item{Set up 2D binning scheme and run all fits}
+      \item{Reweight \texttt{nFTClusters} using work by Maurice}
+    \end{itemize}
+  \end{enumerate}
+\end{frame}
+
+\end{document}
