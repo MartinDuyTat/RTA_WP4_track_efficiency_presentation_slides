@@ -104,7 +104,7 @@
     \item{Recap from last time:}
     \begin{itemize}
       \item[-]{Tracking efficiencies produced for blocks 1, 5, 6, 7, 8}
-      \item[-]{Only 1D binning in $p$ and $\eta$ for now}
+      \item[-]{Only 1D binning in $p$ and $\eta$ ready}
     \end{itemize}
     \item{What's new today?}
     \begin{itemize}
@@ -112,6 +112,7 @@
       \item[-]{AP over block 2, $pp$ ref and 2025 pre-TS data/MC done}
       \item[-]{Tracking efficiencies in 1D produced for these datasets}
       \item[-]{Comparison between block 1a and block 1b MC ready}
+      \item[-]{Preliminary results for 2D binning available for some blocks}
       \item[-]{Prepare to present results in WP4}
     \end{itemize}
   \end{itemize}
@@ -370,6 +371,121 @@
   {Data/MC ratio for Combined/MuonUT track efficiencies 2025 pre-TS}
 \end{frame}
 
+\begin{frame}{2D binning}
+  \vspace{0.0cm}
+  \begin{itemize}
+    \setlength\itemsep{1.0em}
+    \item{Currently we have 1D bins in $p$ and $\eta$ with 10 bins each}
+    \item{Using $10\times10$ 2D bins is impossible}
+    \begin{itemize}
+      \setlength\itemsep{0.3em}
+      \item{Insufficient statistics at high (low) $p$ and low (high) $\eta$}
+      \item{But most bins \underline{do} have sufficient statistics}
+    \end{itemize}
+    \item{Strategy: Start with $10\times10$ bins and merge bins}
+    \begin{itemize}
+      \setlength\itemsep{0.3em}
+      \item{Only consider MC, which is important for constraining the fit shape}
+      \item{Only consider VeloMuon yields, as Downstream efficiencies are close to $100\%$ anyway and MuonUT is only used as a cross check}
+      \item{Try to merge bins along $\eta$ at high $p$ and vice versa}
+      \item{Aim for roughly $\gtrsim 100$ matched candidates in each bin}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{2D binning}
+  \vspace{0.0cm}
+  {\large Final 2D binning in $p$ vs $\eta$ with 72 bins:}
+  \vspace{-0.4cm}
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Plots/TrackCalib2_2D_binning_scheme.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{2D binning}
+  \vspace{0.0cm}
+  {\large Some caveats:}
+  \begin{itemize}
+    \setlength\itemsep{1.0em}
+    \item{In some rare cases a fit might fail...}
+    \begin{itemize}
+      \setlength\itemsep{0.3em}
+      \item{... but I have now implemented single-bin fits in TrackCalib2, so one can vary the start parameters for a specific dataset and rerun the fit in that bin}
+      \item{Still needs to be done by hand, but it's relatively quick}
+    \end{itemize}
+    \item{Tracking efficiency tables need to be provided as JSON files...}
+    \begin{itemize}
+      \item{... but I'll attempt to make some plots as well}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{2D binning}
+  \vspace{0.0cm}
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Plots/TrackingEfficiencies_2D_binning_2024_Block5_Data.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{2D binning}
+  \vspace{0.0cm}
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Plots/TrackingEfficiencies_2D_binning_2024_Block5_MC.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{2D binning}
+  \vspace{0.0cm}
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Plots/TrackingEfficiencies_2D_binning_2024_Block5_Ratio.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{2D binning}
+  \vspace{0.0cm}
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.9\textwidth]{Plots/TrackingEfficiencies_2D_binning_2024_Block5_RatioDiff.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Combined vs MuonUT systematic}
+  \vspace{0.0cm}
+  {\large Combined vs MuonUT systematic strategy? My five cents:}
+  \begin{itemize}
+    \setlength\itemsep{1.0em}
+    \item{Clearly depends on kinematics, so we should use 2D binning}
+    \item{It's a method systematic, so should not depend on dataset}
+    \begin{enumerate}
+      \setlength\itemsep{0.5em}
+      \item{Determine ratio difference for all data sets in each bin}
+      \item{Combine all data sets}
+      \item{For bins with a discrepancy above a threshold (maybe $3\sigma$ from zero), assign the difference from zero as a systematic}
+      \item{Systematic will most likely be small in most bins, but a small number of bins might have a $1\%$--$2\%$ systematic}
+    \end{enumerate}
+    \item{Could potentially leave out Block 2 and 1 from combination, as the MuonUT method is biased and the discrepancy seems larger in these blocks}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Other news}
+  \vspace{0.0cm}
+  {\large Resprucing of 2024 blocks 7 and 8 running now!}
+  \begin{itemize}
+    \setlength\itemsep{1.0em}
+    \item{First validation had a bug in the merging}
+    \begin{itemize}
+      \item{Tupling worked fine, but rerunning reconstruction didn't work}
+      \item{Many thanks to Nicole for debugging this!}
+    \end{itemize}
+    \item{Second validation showed no issues}
+    \item{I need to submit an AP to look at this data soon}
+  \end{itemize}
+\end{frame}
+
 \begin{frame}{Summary and next steps}
   \vspace{0.0cm}
   \begin{enumerate}
@@ -385,8 +501,8 @@
     \begin{itemize}
       \item{Show the current results to WP4}
       \item{If no issues are raised, request larger MC samples with PPG permission}
-      \item{Set up 2D binning scheme and run all fits}
       \item{Reweight \texttt{nFTClusters} using work by Maurice}
+      \item{Systematics?}
     \end{itemize}
   \end{enumerate}
 \end{frame}
