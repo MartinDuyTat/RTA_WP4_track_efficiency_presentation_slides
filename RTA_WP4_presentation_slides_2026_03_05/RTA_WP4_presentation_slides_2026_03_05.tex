@@ -74,6 +74,13 @@
 % Checkmark symbol
 \def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
 
+% Copy code
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily\tiny,
+  breaklines=true
+}
+
 % Here's where the presentation starts, with the info for the title slide
 \title[RTA WP4 meeting]{Effects of muon alignment on tracking efficiencies}
 
@@ -172,6 +179,7 @@
   \vspace{0.2cm}
   \begin{itemize}
     \setlength\itemsep{0.8em}
+    \item{GitLab repository \href{https://gitlab.cern.ch/lhcb-rta/trackcalib2}{here}}
     \item{Fitter independent from Rowina's code, but results are consistent}
     \item{Tuples are currently fetched directly from an AP}
   \end{itemize}
@@ -179,27 +187,15 @@
 
 \begin{frame}{Tracking efficiency plan}
   \vspace{0.0cm}
-  {\Large What are we providing analysts?}
+  {\Large We are providing analysts the Data/MC long track efficiency ratio for MC reweighting/correction:}
   \vspace{0.2cm}
-  \begin{enumerate}
+  \begin{itemize}
     \setlength\itemsep{1.0em}
-    \item{Table of Velo and SciFi tracking efficiencies}
-    \begin{itemize}
-      \setlength\itemsep{0.3em}
-      \item[-]{Measured with a tag-and-probe method}
-      \item[-]{Both MC and data}
-      \item[-]{Provided in 1D $p$ and $\eta$ bins, and also 2D $p$--$\eta$ bins}
-      \item[-]{Plan to provide charge integrated numbers, and also $\mu^+$ and $\mu^-$ separately}
-    \end{itemize}
-    \item{Data/MC long track efficiency ratio}
-    \begin{itemize}
-      \setlength\itemsep{0.3em}
-      \item[-]{Long track efficiency from product of Velo and SciFi efficiencies}
-      \item[-]{2D $p$--$\eta$ binning MC reweighting in physics analysis}
-      \item[-]{Statistical uncertainties from limited data/MC sample sizes}
-      \item[-]{Dominant systematic uncertainty from MuonUT-Combined difference}
-    \end{itemize}
-  \end{enumerate}
+    \item{Long track efficiency from product of Velo and SciFi efficiencies}
+    \item{2D $p$--$\eta$ binning MC reweighting in physics analysis}
+    \item{Statistical uncertainties from limited data/MC sample sizes}
+    \item{Dominant systematic uncertainty from MuonUT-Combined difference}
+  \end{itemize}
 \end{frame}
 
 \begin{frame}{Overview of current progress}
@@ -209,7 +205,12 @@
   \begin{enumerate}
     \setlength\itemsep{1.0em}
     \item{Block 1a vs 1b studies}
-    \item{Results for tracking efficiencies (2024 blocks 2, 1a, 5--8, $pp$ ref, 2025 pre-TS)}
+    \item{Results for tracking efficiencies}
+    \begin{itemize}
+      \item{2024 blocks 2, 1a, 5--8}
+      \item{2024 $pp$ ref run}
+      \item{2025 pre-TS}
+    \end{itemize}
     \item{Guide to TrackCalib2}
   \end{enumerate}
 \end{frame}
@@ -221,8 +222,12 @@
   \begin{enumerate}
     \setlength\itemsep{1.0em}
     \item{\textbf{Block 1a vs 1b studies}}
-    \item{2024 tracking efficiencies (blocks 2, 1a, 5--8, $pp$ ref)}
-    \item{2025 tracking efficiencies (pre-TS)}
+    \item{Results for tracking efficiencies}
+    \begin{itemize}
+      \item{2024 blocks 2, 1a, 5--8}
+      \item{2024 $pp$ ref run}
+      \item{2025 pre-TS}
+    \end{itemize}
     \item{Guide to TrackCalib2}
   \end{enumerate}
 \end{frame}
@@ -272,8 +277,12 @@
   \begin{enumerate}
     \setlength\itemsep{1.0em}
     \item{Block 1a vs 1b studies}
-    \item{\textbf{2024 tracking efficiencies (blocks 2, 1a, 5--8, $\mathbf{pp}$ ref)}}
-    \item{2025 tracking efficiencies (pre-TS)}
+    \item{\textbf{Results for tracking efficiencies}}
+    \begin{itemize}
+      \item{2024 blocks 2, 1a, 5--8}
+      \item{2024 $pp$ ref run}
+      \item{2025 pre-TS}
+    \end{itemize}
     \item{Guide to TrackCalib2}
   \end{enumerate}
 \end{frame}
@@ -354,6 +363,23 @@
   \end{figure}
   \vspace{-0.4cm}
   {Velo efficiencies}
+\end{frame}
+
+\begin{frame}{Efficiency comparisons}
+  \vspace{0.0cm}
+  {\large 2025 Data-MC discrepancy}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_Downstream_P_2025_c1_Data_MC_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_Downstream_ETA_2025_c1_Data_MC_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Need to understand why MC underestimates the SciFi efficiency in 2025!}
 \end{frame}
 
 \begin{frame}{Efficiency comparisons}
@@ -557,6 +583,19 @@
   {Data/MC ratio for Combined/MuonUT track efficiencies 2025 pre-TS}
 \end{frame}
 
+\begin{frame}{General observations}
+  \vspace{0.0cm}
+  {\large General observations on tracking efficiency ratios:}
+  \vspace{0.2cm}
+  \begin{enumerate}
+    \setlength\itemsep{1.0em}
+    \item{Velo efficiencies in 2024 are well described, but underestimated in MC for 2025}
+    \item{Combined efficiency is mostly driven by SciFi efficiency}
+    \item{Generally there is a $1$--$2\%$ discrepancy between Combined and MuonUT efficiencies, but effect is larger at low $p$ and low $\eta$, so discrepancies are smaller in 2D (next slide)}
+    \item{Data--MC differ by almost $5\%$ at low $p$ and low $\eta$ and needs to be understood}
+  \end{enumerate}
+\end{frame}
+
 \begin{frame}{2D binning}
   \vspace{0.0cm}
   \begin{itemize}
@@ -655,12 +694,44 @@
   \begin{itemize}
     \setlength\itemsep{1.0em}
     \item{Binning schemes are defined in JSON files}
-    \item{Tracking efficiencies in 1D and 2D bins also provided as JSON}
-    \item{Data/MC ratio in 2D bins provided for physics analysis}
-    \item{1D plots in $p$ and $\eta$ are also nice to release}
+    \item{Data/MC ratio in 2D bins provided for physics analysis, also as JSON}
+    \item{I'll also make 1D plots in $p$ and $\eta$}
     \item{Initially release charge integrated numbers, but separate $\mu^+$ and $\mu^-$ results will follow}
     \item{Where would the most convenient location to put these files?}
   \end{itemize}
+\end{frame}
+
+\begin{frame}{Overview of current progress}
+  \vspace{0.0cm}
+  {\large What I will talk about today on tracking efficiencies:}
+  \vspace{0.2cm}
+  \begin{enumerate}
+    \setlength\itemsep{1.0em}
+    \item{Block 1a vs 1b studies}
+    \item{Results for tracking efficiencies}
+    \begin{itemize}
+      \item{2024 blocks 2, 1a, 5--8}
+      \item{2024 $pp$ ref run}
+      \item{2025 pre-TS}
+    \end{itemize}
+    \item{\textbf{Guide to TrackCalib2}}
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}[fragile]{Guide to TrackCalib2}
+  \vspace{0.0cm}
+  {If you need to produce tracking efficiencies yourselves, for instance if you want to bin in a different variable, you can run TrackCalib2 yourself:}
+  \vspace{0.2cm}
+  \small
+  \begin{lstlisting}
+git clone ssh://git@gitlab.cern.ch:7999/lhcb-rta/trackcalib2.git
+git checkout mtat/dev/2024
+git submodule init
+git submodule update
+lb-conda trackcalib2
+python trackcalib.py prepare -mode MC -year 2024_Block5 -method VeloMuon
+python trackcalib.py fit -mode MC -year 2024_Block5 -method VeloMuon -variables "P-ETA"
+  \end{lstlisting}
 \end{frame}
 
 \begin{frame}{Summary and next steps}
@@ -671,7 +742,7 @@
     \item{Ready for initial release of 2024 blocks 2, 1a, 5--8, $pp$ ref}
     \begin{itemize}
       \item{Several issues have been resolved}
-      \item{Behaviour consistent between blocks}
+      \item{Behaviour consistent between 2024 blocks}
     \end{itemize}
     \item{2025 Velo efficiencies in MC need to be understood}
     \item{Additional work required for next release:}
