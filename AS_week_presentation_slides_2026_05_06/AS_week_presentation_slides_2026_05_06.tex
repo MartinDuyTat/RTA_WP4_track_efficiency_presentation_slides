@@ -81,6 +81,17 @@
   breaklines=true
 }
 
+% Definitions from Fabian
+\usepackage{xspace}
+\usepackage{booktabs}
+\def\pip    {{\ensuremath{\pi^+}}\xspace}
+\def\pim    {{\ensuremath{\pi^-}}\xspace}
+\def\Kp     {{\ensuremath{K^+}}\xspace}
+\def\Km     {{\ensuremath{K^-}}\xspace}
+\def\Dz     {{\ensuremath{D^0}}\xspace}
+\def\DKpi   {\ensuremath{\Dz \rightarrow \Km \pip}\xspace}     
+\def\DKpipipi   {\ensuremath{\Dz \rightarrow \Km \pip \pip \pim}\xspace} 
+
 % Here's where the presentation starts, with the info for the title slide
 \title[A\&S week]{Tracking efficiencies from \texorpdfstring{$J/\psi\to\mu^+\mu^-$}{JpsiToMuMu}}
 
@@ -105,7 +116,14 @@
 %  \tableofcontents
 %\end{frame}
 
-\begin{frame}{Introduction}
+\begin{frame}{Part I}
+  \vspace{0.0cm}
+  \begin{center}
+    {\Large Part I: Tracking efficiencies with $J/\psi\to\mu^+\mu^-$}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Introduction to tracking efficiencies}
   \vspace{0.0cm}
   {\Large Strategy for tracking efficiency determination:}
   \vspace{0.2cm}
@@ -697,10 +715,6 @@
       \includegraphics[width=1.0\textwidth]{Plots/TrackCalib2_2D_binning_scheme_new.pdf}
     \end{subfigure}
   \end{figure}
-  \begin{figure}[htb]
-    \centering
-
-  \end{figure}
 \end{frame}
 
 \begin{frame}{Combined vs MuonUT systematic}
@@ -740,32 +754,246 @@
   \end{itemize}
 \end{frame}
 
-\begin{frame}{Hadronic corrections}
+\begin{frame}{Part II}
   \vspace{0.0cm}
-  {\large {\color{red}Stuff from Fabian}}
+  \begin{center}
+    {\Large Part II: Hadronic corrections}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Introduction to hadronic corrections}
+  \begin{itemize}
+    \item{About 11\% of kaons and 14\% of pions cannot be reconstructed due to hadronic interactions with the detector material}
+    \item{Modifies the track reconstruction efficiency of long muon tracks}
+    \begin{equation*}
+      \varepsilon_{hadron}^{reco} = \varepsilon_{muon}^{reco} \times \rho^{had. Int.}_{hadron}
+    \end{equation*}
+    \item{Simulation of hadronic interactions has uncertainties due to the material distribution, which is hard to quantify}
+    \item{In Run 2: Assumed 10\% uncertainty $\to$ 1.1\% and 1.4\% uncertainty on the kaon and pion tracking efficiency, respecively}
+    \item{This work: Measure tracking efficiency correction factors $\rho^{had.Int.,Data}_{hadron}/\rho^{had.Int.,MC}_{hadron}$ from data}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Method overview}
+  \begin{itemize}
+  \item Measure the relative efficiency of \DKpi and \DKpipipi in data (blocks 1,2,5-8) and simulation (Sim10g)
+  \item The total reconstruction\&selection efficiency $\varepsilon^{reco\&sel}$ is factorised as
+    \begin{equation*}
+      \varepsilon^{reco\&sel} = \varepsilon^{acc}\varepsilon^{reco}\varepsilon^{HLT1}\varepsilon^{HLT2}\varepsilon^{offline} \equiv \varepsilon^{reco}\varepsilon^{nuis}
+    \end{equation*}
+  \item Can isolate hadronic correction for two pions $\rho^{had.Int.}_{\pi\pi}$
+    \begin{equation*}
+      \frac{\varepsilon^{reco\&sel}_{K\pi\pi\pi}}{\varepsilon^{reco\&sel}_{K\pi}} = \frac{\varepsilon^{reco}_{\mu\mu\mu\mu}\varepsilon^{nuis}_{K\pi\pi\pi}\rho^{had.Int}_{K\pi\pi\pi}}{\varepsilon^{reco}_{\mu\mu}\varepsilon^{nuis}_{K\pi}\rho^{had.Int}_{K\pi}} = \frac{\varepsilon^{reco}_{\mu\mu\mu\mu}\varepsilon^{nuis}_{K\pi\pi\pi}}{\varepsilon^{reco}_{\mu\mu}\varepsilon^{nuis}_{K\pi}} \color{red}{\rho^{had.Int}_{\pi\pi}}
+    \end{equation*}
+  \item Use this information to infer correction for a single pion track $\rho^{had.Int}_\pi$
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Kinematic reweighting}
+  \begin{itemize}
+    \item{High-$p_T$ \pip in \DKpipipi has most similar kinematics to \pip in \DKpi}
+    \item{For $K^- \pi^+_{(\text{high} p_T)}$ to cancel, ensure cover same phase-space by reweighting:}
+  \end{itemize}
+  \vspace{0.6cm}
+  \begin{enumerate}
+    \item{Reweight \DKpipipi MC to sWeighted data in $(p,\eta)$ for $K^-,\pi^+_{\text{high} p_T}$ and $\phi$ for each track}
+    \item{Reweight sWeighted \DKpi data to sWeighted \DKpipipi data in $(p,\eta)$ for $K^-,\pi^+_{(\text{high} p_T)}$}
+    \item{Reweight \DKpi MC to sWeighted \& kin. reweighted \DKpi data}
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Data/MC comparison for \DKpipipi}
+  \centering
+  \foreach \h in {Km,HighPT}{
+    \foreach \j in {P,ETA,PHI}{
+      \includegraphics[width=0.3\textwidth]{TrackingPlots/Reweight_K3pi_\h_\j.pdf}
+    }\\
+  }
+  \centering
+  \small{Comparison of data and simulation of \DKpipipi for $K^-$ (top) and $\pi^+_{\text{high }p_T}$ (bottom) in $p$ (left) and $\eta$ (centre) and $\phi$ (right).}
+\end{frame}
+
+\begin{frame}{Data/MC comparison for \DKpipipi}
+  \centering
+  \foreach \h in {LowPT,Pim}{
+    \foreach \j in {P,ETA,PHI}{
+      \includegraphics[width=0.3\textwidth]{TrackingPlots/Reweight_K3pi_\h_\j.pdf}
+    }\\
+  }
+  \centering
+  \small{Comparison of data and simulation of \DKpipipi for $\pi^+_{\text{low }p_T}$ (top) and $\pi^-$ (bottom) in $p$ (left) and $\eta$ (centre) and $\phi$ (right).}
+\end{frame}
+
+\begin{frame}{Data/MC comparison for \DKpi}
+  \centering
+  \foreach \h in {Km,Pip}{
+    \foreach \j in {P,ETA,PHI}{
+      \includegraphics[width=0.3\textwidth]{TrackingPlots/Reweight_Kpi_\h_\j.pdf}
+    }\\
+  }
+  \centering
+  \small{Comparison of data and simulation of $D^0\to K\pi$ and $D^0\to K\pi\pi\pi$ for $K^-$ (top) and $\pi^+/\pi^+_{\text{high }p_T}$ (bottom) in $p$ (left) and $\eta$ (centre) and $\phi$ (right).}
+\end{frame}
+
+\begin{frame}{Measure $\rho^{had.Int}_{\pi\pi}$ in data and MC}
+  \begin{itemize}
+    \setlength\itemsep{0.8em}
+  \item Measure $\rho_{\pi\pi}^{had.Int.}$ in data and MC
+    \begin{equation*}
+      \begin{split}
+        \rho_{\pi\pi}^{had.Int,Data} &= \frac{N_{K\pi\pi\pi}^{fit}}{N_{K\pi}^{fit}} \frac{\mathcal{B}(D^0\to K^-\pi^+)}{\mathcal{B}(D^0\to K^-\pi^+\pi^+\pi^-)}\frac{\varepsilon_{\mu\mu}^{reco}}{\varepsilon_{\mu\mu\mu\mu}^{reco}}\frac{\varepsilon_{K\pi}^{nuis}}{\varepsilon_{K\pi\pi\pi}^{nuis}}\\
+        \rho_{\pi\pi}^{had.Int,MC} &= \frac{N_{K\pi\pi\pi}^{sel}}{N_{K\pi\pi\pi}^{gen}}\frac{N_{K\pi}^{gen}}{N_{K\pi}^{sel}}\frac{\varepsilon_{\mu\mu}^{reco}}{\varepsilon_{\mu\mu\mu\mu}^{reco}}\frac{\varepsilon_{K\pi}^{nuis}}{\varepsilon_{K\pi\pi\pi}^{nuis}}
+      \end{split}
+    \end{equation*}
+  \item Calculate data/MC correction factor $\rho_{\pi\pi}^{had.Int.,Data/MC} = \rho_{\pi\pi}^{had.Int.,Data}/\rho_{\pi\pi}^{had.Int.,MC}$
+  \item Use the following additional inputs:
+    \begin{itemize}
+    \item Standard (muon) tracking corrections from TrackCalib2
+    \item $\mathcal{B}(D^0\to K^-\pi^+\pi^+\pi^-)/\mathcal{B}(D^0\to K^-\pi^+) = 2.083\pm0.031$ from PDG
+    \item Assume $\frac{\varepsilon^{nuis,Data}_{K\pi}/\varepsilon^{nuis,Data}_{K\pi\pi\pi}}{\varepsilon^{nuis,MC}_{K\pi}/\varepsilon^{nuis,MC}_{K\pi}} = 1$
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Phase-space integrated hadronic correction}
+  \begin{minipage}{0.6\textwidth}
+    \begin{itemize}
+    \item{Single fit to \DKpi and \DKpipipi data}
+    \item{Kinematic corrections applied to \DKpi data}
+      \begin{equation*}
+        \rho^{had.Int., Data/MC}_{\pi\pi} = 100.88\pm1.51\%
+      \end{equation*}
+    \item{Correction for single hadron track}
+      \begin{equation*}
+        \rho^{had.Int.,Data/MC}_{\pi} = 100.44\pm0.75\%
+      \end{equation*} 
+    \item{Uncertainty dominated by}
+      \vspace{-0.2cm}
+      \begin{equation*}
+        \mathcal{B}(D^0\to K^-\pi^+\pi^+\pi^-)/\mathcal{B}(D^0\to K^-\pi^+)
+      \end{equation*}
+    \end{itemize}
+  \end{minipage}
+  \begin{minipage}{0.35\textwidth}
+    \centering
+    \includegraphics[width=0.75\textwidth]{TrackingPlots/Data_D2Kpi.pdf}
+    \includegraphics[width=0.75\textwidth]{TrackingPlots/Data_D2K3pi.pdf}\\
+    \small{\DKpi (top) and \DKpipipi (bottom), 2024 Block 1}
+  \end{minipage}
+\end{frame}
+
+\begin{frame}{Hadronic correction as function of $\eta$}
   \begin{itemize}
     \setlength\itemsep{1.0em}
-    \item{}
+    \item{Check for dependence of the hadronic correction factor on $\eta$}
+    \item{Dependence on $K^-\pi^+_{(\text{high }p_T)}$ cancels in the ratio...}
+    \item{... but not $\pi^+_{\text{low }p_T}$ and $\pi^-$ from \DKpipipi}
+    \item{$\to$ Need to bin in $\eta(\pi^+_{\text{low }p_T})$ and $\eta(\pi^-)$}
+    \begin{itemize}
+      \item[-]{Use same bin edges as muon tracking efficiency}
+    \end{itemize}
   \end{itemize}
+\end{frame}
+
+\begin{frame}{Hadronic correction as function of $\eta$}
+  \begin{itemize}
+    \item{Measure $\rho^{had.Int}_{\pi\pi}$ in bins of $(\eta,\eta)$}
+    \item{Obtain 1D distribution by assuming factorisation $\rho_{\pi\pi}^{had.Int.} = \rho_{\pi}^{had.Int.}\rho_{\pi}^{had.Int.}$}
+    \item{In practice: Perform a $\chi^2$-fit to get best $\rho^{had.Int.}_\pi(\eta)$ accounting for the uncertainty in each bin}
+  \end{itemize}
+  \centering
+  \includegraphics[width=0.38\textwidth]{TrackingPlots/rho_pipi_ETA.pdf}
+  \includegraphics[width=0.4\textwidth]{TrackingPlots/rho_pi_ETA.pdf}\\
+  \small{Hadronic correction factor for two pions (left) in 2d bins of $\eta$ (left) and hadronic correction factor for a single pion (right).}
+\end{frame}
+
+\begin{frame}{Hadronic correction as function of $p$ or $\phi$}
+  \begin{itemize}
+    \item{Can also bin in $(p,p)$ or $(\phi,\phi)$ and measure the hadronic correction factor as function of $p$ or $\phi$}
+    \item{As expected, no dependence on $p$}
+    \item{Drop around $\phi \sim -\pi$ observed and is being investigated}
+  \end{itemize}
+  \centering
+  \includegraphics[width=0.4\textwidth]{TrackingPlots/rho_pi_P.pdf}
+  \includegraphics[width=0.37\textwidth]{TrackingPlots/rho_pi_PHI.pdf}\\
+  \small{Hadronic correction factor for a single track in bin sof $p$ (left) and $\phi$ (right).}
+\end{frame}
+
+\begin{frame}{Cancellation of $K^-\pi^+_{(\text{high }p_T)}$}
+  \begin{itemize}
+  \item So far, assume perfect cancellation between $K^-\pi^+$ from \DKpi and $K^-\pi^+_{\text{high }p_T}$ from \DKpipipi
+  \item Just observed some non-cancellation for at the edges of $p$, $\eta$ and $\phi$
+  \item[$\rightarrow$] Need to revisit the kinematic reweighting
+  \item Structures seen as function $\eta$ and $\phi$ might be (partially) due to this
+  \end{itemize}
+  \centering
+  \includegraphics[width=0.3\textwidth]{TrackingPlots/Reweight_Ratio_P.pdf}
+  \includegraphics[width=0.3\textwidth]{TrackingPlots/Reweight_Ratio_ETA.pdf}
+  \includegraphics[width=0.3\textwidth]{TrackingPlots/Reweight_Ratio_PHI.pdf}\\
+  \small{Ratio of data/MC for \DKpipipi (red), \DKpi (yellow) and the double-ratio (black) of the $\pi^+$ cancelling between the two decays in bins of $p$ (left), $\eta$ (centre) and $\phi$ (right).}
 \end{frame}
 
 \begin{frame}{Summary and next steps}
   \vspace{0.0cm}
+  {\large Tracking efficiencies with $J/\psi\to\mu^+\mu^-$}
   \begin{itemize}
-    \setlength\itemsep{1.0em}
-    \item{Tracking efficiencies v0 for 2024 can now be used by analysts}
+    \item{Muon tracking efficiencies v0 for 2024 can now be used by analysts}
     \item{Issues to follow up on:}
     \begin{itemize}
       \item[-]{Block 1b MC}
       \item[-]{2025 Velo efficiencies}
     \end{itemize}
     \item{Waiting for large MC production before next release}
-    \item{{\color{red}Hadronic corrections due to uncertainty in material budget shows promising results, and corrections will be made available very soon}}
   \end{itemize}
-  \vspace{0.2cm}
+  {\large Hadronic corrections}
+  \begin{itemize}
+    \item{Hadronic correction factors using 2024 data and MC have been measured using \DKpi and \DKpipipi}
+    \item{Well modelled in MC, and corrections provided in $\eta$ bins}
+    \item{Uncertainties are about 1\% in most bins of $\eta$}
+    \item{Still need to investigate}
+    \begin{itemize}
+      \item[-]{data/MC agreement in $p$, $\eta$ and $\phi$}
+      \item[-]{cancellation of $K^-\pi^+$, nuisance effects}
+    \end{itemize}
+  \end{itemize}
+  \vspace{0.0cm}
   \begin{center}
     \Huge Thanks for your attention!
   \end{center}
+\end{frame}
+
+\begin{frame}{Backup}
+  \vspace{0.0cm}
+  \begin{center}
+    {\Large Backup}
+  \end{center}
+\end{frame}
+
+\begin{frame}{Uncertainties for phase-space integrated result}
+  \begin{table}[]
+    \centering
+    \begin{tabular}{cc}
+      \toprule
+      Source & $\Delta \rho^{had.Int.,Data/MC}_{\pi}$\\
+      \midrule
+      $D\to K\pi$ simulation sample & 0.04\% \\
+      $D\to K3\pi$ simulation sample & 0.07\% \\
+      $D\to K\pi$ Data sample & 0.01\% \\
+      $D\to K3\pi$ Data sample & 0.01\% \\
+      Tracking weights & 0.12\%\\
+      $\mathcal{B}(D^0\to K^-\pi^+\pi^+\pi^-)/\mathcal{B}(D^0\to K^-\pi^+)$ & 0.74\%\\
+      HLT selection & x.xx\\
+      Offline selection & x.xx\\
+      \midrule
+      Total & 0.76\%\\
+      \bottomrule
+    \end{tabular}
+  \end{table}
+  \begin{itemize}
+  \item Dominated by uncertainty on the branching ratio
+  \item Uncertainty due to tracking weights from bootstrapping
+  \item Expect HLT and offline uncertainties to cancel in the ratio
+  \end{itemize}
 \end{frame}
 
 \end{document}
