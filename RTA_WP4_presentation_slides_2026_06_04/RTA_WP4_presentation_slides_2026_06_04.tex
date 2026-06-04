@@ -333,7 +333,7 @@
     \setlength\itemsep{0.8em}
     \item{Velo M23 was (sometimes) working in data, but all four sensors are turned off in MC}
     \item{Two sensors in Velo M21 were turned off}
-    \item{Two consecutive modules that are not working properly can significant impact track efficiency!}
+    \item{Two consecutive modules that are not working properly can significantly impact track efficiency!}
   \end{itemize}
   \begin{figure}[htb]
     \centering
@@ -364,13 +364,19 @@
   {\large What are the consequences for tracking efficiencies?}
   \vspace{0.2cm}
   \begin{itemize}
-    \setlength\itemsep{1.0em}
+    \setlength\itemsep{0.8em}
     \item{All Sim10g MC samples are affected}
     \item{In principle tracking efficiency corrections should account for this...}
     \item{... but a fix is also in progress: \href{https://gitlab.cern.ch/lhcb-conddb/SIMCOND/-/merge_requests/306}{!306}}
   \end{itemize}
   \vspace{0.5cm}
-  {When the larger MC samples are available, we propose the following mitigation: Change $p$--$\eta$ binning to $p$--$\eta$--$\phi$ with two $\phi$ bins corresponding to left and right ($\abs{\phi} < \pi/2$ and $\abs{\phi} \geq \pi/2$)}
+  {\large What we would like to do about this:}
+  \vspace{0.2cm}
+  \begin{enumerate}
+    \setlength\itemsep{0.8em}
+    \item{Request a larger MC production (16M per block) for 2025 pre-TS, with \href{https://gitlab.cern.ch/lhcb-conddb/SIMCOND/-/merge_requests/306}{!306}}
+    \item{Change $p$--$\eta$ binning to $p$--$\eta$--$\phi$ with two $\phi$ bins corresponding to left and right ($\abs{\phi} < \pi/2$ and $\abs{\phi} \geq \pi/2$)}
+  \end{enumerate}
 \end{frame}
 
 \begin{frame}{2D binning}
