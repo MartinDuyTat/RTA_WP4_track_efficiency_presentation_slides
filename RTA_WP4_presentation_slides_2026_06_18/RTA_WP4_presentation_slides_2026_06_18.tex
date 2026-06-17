@@ -1,0 +1,569 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Overleaf (WriteLaTeX) Example: Molecular Chemistry Presentation
+%
+% Source: http://www.overleaf.com
+%
+% In these slides we show how Overleaf can be used with standard
+% chemistry packages to easily create professional presentations.
+%
+% Feel free to distribute this example, but please keep the referral
+% to overleaf.com
+%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+\documentclass[xcolor={dvipsnames}]{beamer}
+
+\mode<presentation>
+{
+  \usetheme{Madrid}       % or try default, Darmstadt, Warsaw, ...
+  \usecolortheme{default} % or try albatross, beaver, crane, ...
+  \usefonttheme{default}    % or try default, structurebold, ...
+  \setbeamertemplate{navigation symbols}{}
+  \setbeamertemplate{caption}[numbered]
+}
+
+\usepackage[english]{babel}
+\usepackage[utf8x]{inputenc}
+\usepackage{graphicx}
+\usepackage{hyperref}
+  \hypersetup{colorlinks=true}
+  \hypersetup{urlcolor=blue}
+  \hypersetup{linkcolor = .}
+\usepackage{xcolor}
+\usepackage{siunitx}
+  \sisetup{separate-uncertainty = true}
+\DeclareSIUnit\barn{b}
+\usepackage{physics}
+\usepackage[font=small,labelfont=bf]{caption}
+\usepackage{subcaption}
+\usepackage[en-GB]{datetime2}
+\usepackage{overpic}
+\usepackage{feynmp}
+\DeclareGraphicsRule{*}{mps}{*}{}
+\usepackage{scalerel}
+\newcommand{\mylbrace}[2]{\vspace{#2pt}\hspace{6pt}\scaleleftright[\dimexpr5pt+#1\dimexpr0.06pt]{\lbrace}{\rule[\dimexpr2pt-#1\dimexpr0.5pt]{-4pt}{#1pt}}{.}}
+\newcommand{\myrbrace}[2]{\vspace{#2pt}\scaleleftright[\dimexpr5pt+#1\dimexpr0.06pt]{.}{\rule[\dimexpr2pt-#1\dimexpr0.5pt]{-4pt}{#1pt}}{\rbrace}\hspace{6pt}}
+
+% Trim in percent
+\usepackage{adjustbox}
+
+% No "Figure" prefix
+\setbeamertemplate{caption}{\raggedright\insertcaption\par}
+
+% Nice decay amplitude diagrams
+\usepackage{amsmath,amssymb,tikz-cd}
+
+% Strike out text
+\usepackage[normalem]{ulem}
+
+% For figures with text overlay
+\usepackage{overpic}
+
+% Arrows
+\usepackage{tikz}
+\newcommand{\tikzmark}[1]{\tikz[remember picture] \node[coordinate] (#1) {#1};}
+
+% Colourbox with line breaks
+\newcommand{\cbox}[2][lime!20]{%
+  \colorbox{#1}{\parbox{\dimexpr\linewidth-2\fboxsep}{\strut #2\strut}}%
+}
+
+% Vector arrows
+\usepackage[pdftex]{pict2e}
+
+% Checkmark symbol
+\def\checkmark{\tikz\fill[scale=0.4](0,.35) -- (.25,0) -- (1,.7) -- (.25,.15) -- cycle;}
+
+% Copy code
+\usepackage{listings}
+\lstset{
+  basicstyle=\ttfamily\tiny,
+  breaklines=true
+}
+
+% Definitions from Fabian
+\usepackage{xspace}
+\usepackage{booktabs}
+\def\pip    {{\ensuremath{\pi^+}}\xspace}
+\def\pim    {{\ensuremath{\pi^-}}\xspace}
+\def\Kp     {{\ensuremath{K^+}}\xspace}
+\def\Km     {{\ensuremath{K^-}}\xspace}
+\def\Dz     {{\ensuremath{D^0}}\xspace}
+\def\DKpi   {\ensuremath{\Dz \rightarrow \Km \pip}\xspace}     
+\def\DKpipipi   {\ensuremath{\Dz \rightarrow \Km \pip \pip \pim}\xspace} 
+
+% Here's where the presentation starts, with the info for the title slide
+\title[RTA WP4 meeting]{Update on 2025 post-TS tracking efficiencies}
+
+\author[Martin Tat]{Rowina Caspary$^1$, Michel De Cian$^2$, Fabian Glaser$^1$, Stephanie Hansmann-Menzemer$^1$, Peilian Li$^3$, Maurice Morgenthaler$^1$, \\ \textbf{Martin Tat}$^1$}
+\institute[Heidelberg]{Heidelberg University$^1$, University of Manchester$^2$, UCAS$^3$}
+\date{18th June 2026}
+
+\titlegraphic{\includegraphics[height = 1.2cm]{../lhcb.jpg}\hspace{1.0cm}~%
+              \includegraphics[height = 1.2cm]{../FSP_logo.png}
+              \includegraphics[height = 1.2cm]{../ManchesterLogo.jpg}~%
+              \includegraphics[height = 1.2cm]{../UCAS_logo.png}~%
+              \includegraphics[height = 1.2cm]{../HeidelbergLogo.pdf}}
+
+\begin{document}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% These three lines create an automatically generated table of contents.
+%\begin{frame}{Outline}
+%  \tableofcontents
+%\end{frame}
+
+\begin{frame}{Tag-and-probe method}
+  \vspace{0.0cm}
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Plots/Tag_and_probe_method.png}
+    \caption*{\tiny Figure by Rowina}
+  \end{figure}
+  \vspace{-0.1cm}
+  \begin{itemize}
+    \item{Tag-and-probe method with $J/\psi\to\mu^+\mu^-$}
+    \item{Fully reconstruct one muon...}
+    \item{... and partially reconstruct the other muon}
+    \item{Match hits in specific sub-detector with partially reconstructed track}
+  \end{itemize}
+  \begin{equation*}
+    \epsilon_{\rm track} = \frac{N_{\rm matched}}{N_{\rm matched} + N_{\rm failed}}
+  \end{equation*}
+\end{frame}
+
+\begin{frame}{Introduction to methods}
+  \vspace{0.0cm}
+  {\Large Strategy for tracking efficiency determination:}
+  \vspace{0.2cm}
+  \begin{itemize}
+    \setlength\itemsep{0.8em}
+    \item{Combine efficiencies of two methods:}
+    \begin{itemize}
+      \item{VeloMuon: SciFi efficiency}
+      \item{Downstream: Velo efficiency}
+      \item{Combined: Velo $\times$ SciFi efficiencies}
+    \end{itemize}
+    \item{Cross check with long track efficiency from the MuonUT method}
+    \begin{itemize}
+      \item{Main systematic}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Overview of work}
+  \vspace{0.0cm}
+  {Recent presentations:}
+  \vspace{0.2cm}
+  \begin{itemize}
+    \setlength\itemsep{0.5em}
+    \item{\href{https://indico.cern.ch/event/1675248/\#80-trackcalib-for-run-3}{A/S week talk}}
+    \item{\href{https://indico.cern.ch/event/1577577/\#3-update-on-2025-and-2026-trac}{RTA WP4 talk on 2025 pre-TS corrections}}
+    \item{For analysts: v0 tables available on GitLab \href{https://gitlab.cern.ch/lhcb-rta/tracking-efficiencies-run-3}{here}}
+  \end{itemize}
+  \vspace{0.5cm}
+  {Tracking efficiencies are determined using TrackCalib2}
+  \vspace{0.2cm}
+  \begin{itemize}
+    \setlength\itemsep{0.5em}
+    \item{GitLab repository \href{https://gitlab.cern.ch/lhcb-rta/trackcalib2}{here}}
+    \item{Mass fit done on tuples from AP to extract efficiencies}
+    \item{Note: Analysts should \underline{not} have to run TrackCalib2 themselves, unless the released numbers are not suitable (need different binning, etc)}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Datasets considered}
+  \vspace{0.0cm}
+  {\large Datasets considered:}
+  \vspace{0.2cm}
+  \begin{itemize}
+    \setlength\itemsep{1.0em}
+    \item{Samples with Sim10g corrections available:}
+    \begin{itemize}
+      \item[-]{2024 blocks 2, 1, 5, 6, 7, 8, $pp$ ref}
+      \item[-]{2025 pre-TS (blocks 1, 2)}
+      \item[-]{\textbf{2025 post-TS (blocks 3, 4, 5)}}
+    \end{itemize}
+    \item{Samples not analysed yet due to missing MC:}
+    \begin{itemize}
+      \item[-]{2024 blocks 4 and 3}
+      \item[-]{2026}
+    \end{itemize}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{2025 block definitions}
+  \vspace{0.0cm}
+  {\large Define 2025 blocks according to simulation conditions:}
+  \vspace{0.2cm}
+  \begin{center}
+    \begin{table}[htb]
+      \begin{center}
+        \begin{tabular}{cccccc}
+          \hline
+          Block & Sprucing campaign & Magnet polarity & MC sample & $\mathcal{L}_{\rm int} ($fb$^{-1})$ \\
+          \hline
+          $1$   & Sprucing25c1      & MagDown         & W21       & $0.4$ \\
+          $2$   & Sprucing25c1      & MagUp           & W22.25    & $1.6$ \\
+          $3$   & Sprucing25c2      & MagDown         & W28.36    & $4.3$ \\
+          $4$   & Sprucing25c3/4    & MagUp           & W37.43    & $4.1$ \\
+          $5$   & Sprucing5c4       & MagDown         & W43.45    & $1.0$ \\
+          \hline
+        \end{tabular}
+      \end{center}
+    \end{table}
+  \end{center}
+\end{frame}
+
+\begin{frame}{2025 tracking efficiencies}
+  \vspace{0.0cm}
+  {\large Comparison of tracking efficiencies in 2025 data blocks}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_Data_VeloMuon_P_workdir_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_MC_VeloMuon_P_workdir_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {SciFi efficiencies dropping slowly over time in data}
+\end{frame}
+
+\begin{frame}{2025 tracking efficiencies}
+  \vspace{0.0cm}
+  {\large Comparison of tracking efficiencies in 2025 data blocks}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_Data_VeloMuon_ETA_workdir_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_MC_VeloMuon_ETA_workdir_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {SciFi efficiencies dropping slowly over time in data}
+\end{frame}
+
+\begin{frame}{2025 tracking efficiencies}
+  \vspace{0.0cm}
+  {\large Comparison of tracking efficiencies in 2025 data blocks}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_Data_Downstream_P_workdir_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_MC_Downstream_P_workdir_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Velo efficiencies underestimated in blocks 1/2, but not blocks 3/4/5}
+\end{frame}
+
+\begin{frame}{2025 tracking efficiencies}
+  \vspace{0.0cm}
+  {\large Comparison of tracking efficiencies in 2025 data blocks}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_Data_Downstream_ETA_workdir_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_MC_Downstream_ETA_workdir_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Velo efficiencies underestimated in blocks 1/2, but not blocks 3/4/5}
+\end{frame}
+
+\begin{frame}{2025 tracking efficiencies}
+  \vspace{0.0cm}
+  {\large Comparison of tracking efficiencies in 2025 data blocks}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_Data_MuonUT_P_workdir_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_MC_MuonUT_P_workdir_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {MuonUT efficiencies look consistent, but lower statistics}
+\end{frame}
+
+\begin{frame}{2025 tracking efficiencies}
+  \vspace{0.0cm}
+  {\large Comparison of tracking efficiencies in 2025 data blocks}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_Data_MuonUT_ETA_workdir_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_MC_MuonUT_ETA_workdir_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {MuonUT efficiencies look consistent, but lower statistics}
+\end{frame}
+
+\begin{frame}{2025 data/MC ratios in 1D}
+  \vspace{0.0cm}
+  {\large 2025 pre-TS data/MC ratios, Block 1}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_P_2025_Block1_workdir_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_ETA_2025_Block1_workdir_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Note that Velo efficiencies are underestimated for this block!}
+\end{frame}
+
+\begin{frame}{2025 data/MC ratios in 1D}
+  \vspace{0.0cm}
+  {\large 2025 pre-TS data/MC ratios, Block 2}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_P_2025_Block2_workdir_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_ETA_2025_Block2_workdir_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Note that Velo efficiencies are underestimated for this block!}
+\end{frame}
+
+\begin{frame}{2025 data/MC ratios in 1D}
+  \vspace{0.0cm}
+  {\large 2025 post-TS data/MC ratios, Block 3}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_P_2025_Block3_workdir_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_ETA_2025_Block3_workdir_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Much better Velo efficiency agreement}
+\end{frame}
+
+\begin{frame}{2025 data/MC ratios in 1D}
+  \vspace{0.0cm}
+  {\large 2025 post-TS data/MC ratios, Block 4}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_P_2025_Block4_workdir_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_ETA_2025_Block4_workdir_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Much better Velo efficiency agreement}
+\end{frame}
+
+\begin{frame}{2025 data/MC ratios in 1D}
+  \vspace{0.0cm}
+  {\large 2025 post-TS data/MC ratios, Block 5}
+  \begin{figure}[htb]
+    \centering
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_P_2025_Block5_workdir_samples.pdf}
+    \end{subfigure}%
+    \begin{subfigure}{0.5\textwidth}
+      \centering
+      \includegraphics[width=1.0\textwidth]{Plots/trackeff_ratio_ETA_2025_Block5_workdir_samples.pdf}
+    \end{subfigure}
+  \end{figure}
+  {Much better Velo efficiency agreement}
+\end{frame}
+
+\begin{frame}{2D binning}
+  \vspace{0.0cm}
+  {\large 2D binning in $p$ vs $\eta$ with 72 bins:}
+  \vspace{-0.3cm}
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.8\textwidth]{Plots/TrackCalib2_2D_binning_scheme.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{2D binning}
+  \vspace{0.0cm}
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Plots/TrackingEfficiencies_2D_binning_2025_Block3_Data_colour.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{2D binning}
+  \vspace{0.0cm}
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Plots/TrackingEfficiencies_2D_binning_2025_Block3_MC_colour.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{2D binning}
+  \vspace{0.0cm}
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Plots/TrackingEfficiencies_2D_binning_2025_Block3_Ratio_colour.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{2D binning}
+  \vspace{0.0cm}
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Plots/TrackingEfficiencies_2D_binning_2025_Block3_RatioDiff_colour.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{Release of tracking efficiencies}
+  \vspace{0.0cm}
+  {\large We would like to release the tracking efficiency correction tables for 2025 post-TS}
+  \vspace{0.2cm}
+  \begin{itemize}
+    \setlength\itemsep{1.0em}
+    \item{2024 and 2025 pres-TS v0 are already available on \href{https://gitlab.cern.ch/lhcb-rta/tracking-efficiencies-run-3}{GitLab}}
+    \item{2025 file will be updated with additional post-TS tables}
+    \item{Feedback is welcome!}
+  \end{itemize}
+\end{frame}
+
+\begin{frame}{Some remarks on systematic uncertainties}
+  \vspace{0.0cm}
+  {\large Quick clarifications on systematic uncertainties:}
+  \vspace{0.3cm}
+  \begin{enumerate}
+    \setlength\itemsep{1.5em}
+    \item{Systematic provided is \underline{correlated} between all bins, while statistical uncertainties are independent between bins}
+    \item{Currently systematics only consists of the Combined-MuonUT discrepancy, which is by far the largest systematic}
+    \item{At low $p$ and $\eta$, corrections might vary significantly within each bin, and analyses that are sensitive to this effect should consider an additional systematic due to this}
+  \end{enumerate}
+\end{frame}
+
+\begin{frame}{Summary and next steps}
+  \vspace{0.0cm}
+  {\large Summary:}
+  \begin{enumerate}
+    \item{2025 post-TS tracking efficiencies show no issues}
+    \item{Correction tables for post-TS have been prepared}
+  \end{enumerate}
+  \vspace{0.1cm}
+  {\large Next steps}
+  \begin{itemize}
+    \item{Finalise hadronic corrections}
+    \item{Update tables using larger MC samples}
+    \begin{itemize}
+      \item{Revised P-ETA binning}
+      \item{Separate tables for $\mu^+$ and $\mu^-$}
+      \item{Charge integrated table with left and right bins in $\phi$}
+    \end{itemize}
+  \end{itemize}
+  \vspace{0.0cm}
+  \begin{center}
+    \Huge Thanks for your attention!
+  \end{center}
+\end{frame}
+
+\begin{frame}{Backup}
+  \vspace{0.0cm}
+  \begin{center}
+    \huge Backup
+  \end{center}
+\end{frame}
+
+\begin{frame}{2D binning}
+  \vspace{0.0cm}
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Plots/TrackingEfficiencies_2D_binning_2025_Block4_Data_colour.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{2D binning}
+  \vspace{0.0cm}
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Plots/TrackingEfficiencies_2D_binning_2025_Block4_MC_colour.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{2D binning}
+  \vspace{0.0cm}
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Plots/TrackingEfficiencies_2D_binning_2025_Block4_Ratio_colour.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{2D binning}
+  \vspace{0.0cm}
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Plots/TrackingEfficiencies_2D_binning_2025_Block4_RatioDiff_colour.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{2D binning}
+  \vspace{0.0cm}
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Plots/TrackingEfficiencies_2D_binning_2025_Block5_Data_colour.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{2D binning}
+  \vspace{0.0cm}
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Plots/TrackingEfficiencies_2D_binning_2025_Block5_MC_colour.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{2D binning}
+  \vspace{0.0cm}
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Plots/TrackingEfficiencies_2D_binning_2025_Block5_Ratio_colour.pdf}
+  \end{figure}
+\end{frame}
+
+\begin{frame}{2D binning}
+  \vspace{0.0cm}
+  \begin{figure}[htb]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Plots/TrackingEfficiencies_2D_binning_2025_Block5_RatioDiff_colour.pdf}
+  \end{figure}
+\end{frame}
+
+\end{document}
